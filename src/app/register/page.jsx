@@ -54,6 +54,12 @@ export default function Register() {
       console.log(err)
     }
   }
+
+
+
+  useEffect(() => {
+    if (isAuthUser) router.push("/");
+  }, [isAuthUser]);
  
 
   return (

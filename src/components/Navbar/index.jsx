@@ -4,7 +4,7 @@ import React, { Fragment, useContext } from 'react'
 import CommonModal from '../CommonModal';
 import { GlobalContext } from '@/context';
 import Cookies from "js-cookie";
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 function NavItems({ isModalView = false, isAdminView, router }) {
     return (
@@ -43,9 +43,12 @@ function NavItems({ isModalView = false, isAdminView, router }) {
 
 export default function Navbar () {
 
-    const router = useRouter()
+    const router = useRouter();
+    const pathName = usePathname();
 
-    const isAdminView = false;
+    const isAdminView = pathName.includes("admin-view")
+
+
 
     const {user, isAuthUser, setIsAuthUser, setUser} = useContext(GlobalContext)
     console.log( "user", user)
@@ -94,11 +97,15 @@ function handleLogout (){
                         {
                             user?.role === "admin" ? (
                                 isAdminView ? <button
+                                onClick={() => router.push("/")}
+
                                     className={
                                         "mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
                                     }
                                 >Client View</button> :
                                     <button
+                                    onClick={() => router.push("/admin-view")}
+
                                         className={
                                             "mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
                                         }
@@ -150,14 +157,14 @@ function handleLogout (){
                         </button>
 
                     </div>
-                    <NavItems />
+                    <NavItems isModalView={isAdminView} router={router} />
                 </div>
             </nav>
             <CommonModal
                 showModalTitle={false}
                 mainContent={
                     <NavItems
-                        // router={router}
+                        router={router}
                         isModalView={true}
                         isAdminView={isAdminView}
                     />

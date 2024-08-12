@@ -9,6 +9,12 @@ export default function GlobalState({ children }) {
     const [isAuthUser, setIsAuthUser] = useState(null);
     const [user, setUser] = useState(null)
 
+
+    const [componentLevelLoader, setComponentLevelLoader] = useState({
+      loading: false,
+      id: "",
+    });
+
     useEffect(() => {
         try {
           if (Cookies.get("token") !== undefined) {
@@ -33,7 +39,9 @@ export default function GlobalState({ children }) {
             isAuthUser,
             setIsAuthUser,
             user,
-            setUser
+            setUser,
+            componentLevelLoader,
+            setComponentLevelLoader
         }}>
         {children}
 
