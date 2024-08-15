@@ -6,6 +6,9 @@ import { GlobalContext } from '@/context';
 import Cookies from "js-cookie";
 import { usePathname, useRouter } from 'next/navigation';
 
+
+
+
 function NavItems({ isModalView = false, isAdminView, router }) {
     return (
         <div
@@ -41,7 +44,7 @@ function NavItems({ isModalView = false, isAdminView, router }) {
     );
 }
 
-export default function Navbar () {
+export default function Navbar() {
 
     const router = useRouter();
     const pathName = usePathname();
@@ -50,95 +53,105 @@ export default function Navbar () {
 
 
 
-    const {user, isAuthUser, setIsAuthUser, setUser} = useContext(GlobalContext)
-    console.log( "user", user)
-   
+    const { user, isAuthUser, setIsAuthUser, setUser } = useContext(GlobalContext)
+    console.log("user", user)
+
 
     const { showNavModal, setShowNavModal } = useContext(GlobalContext);
 
-function handleLogout (){
-    setIsAuthUser(false);
-    setUser(null);
-    Cookies.remove("token");
-    localStorage.clear();
-    router.push("/");
-}
-    
+    function handleLogout() {
+        setIsAuthUser(false);
+        setUser(null);
+        Cookies.remove("token");
+        localStorage.clear();
+        router.push("/");
+    }
+
 
 
     return (
         <>
-            <nav className='bg-white text-black fixed top-0 left-0 w-full z-20 border-b border-gray-200'>
-                <div className='max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4'>
-                    <div className='flex items-center cursor-pointer'>
-                        <span className='self-center text-2xl font-semibold whitespace-nowrap'>
+           
+
+
+            <nav className="bg-white text-black fixed w-full z-20 top-0 left-0 border-b border-gray-200">
+                <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+                    <div
+                        onClick={() => router.push("/")}
+                        className="flex items-center cursor-pointer"
+                    >
+                        <span className="slef-center text-2xl font-semibold whitespace-nowrap">
                             Ecommercery
                         </span>
-
-
                     </div>
-                    <div className='flex md:order-2 gap-2'>
-                        {
-                            !isAdminView && isAuthUser ? (
-                                <Fragment>
-                                    <button
-                                        className={
-                                            "mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
-                                        }
-                                    >Account</button>
-                                    <button
-                                        className={
-                                            "mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
-                                        }
-                                    >Cart</button>
-                                </Fragment>
-                            ) : null
-                        }
-                        {
-                            user?.role === "admin" ? (
-                                isAdminView ? <button
-                                onClick={() => router.push("/")}
-
+                    <div className="flex md:order-2 gap-2">
+                        {!isAdminView && isAuthUser ? (
+                            <Fragment>
+                                <button
                                     className={
                                         "mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
                                     }
-                                >Client View</button> :
-                                    <button
+                                    onClick={() => router.push('/account')}
+                                >
+                                    Account
+                                </button>
+                                <button
+                                    className={
+                                        "mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
+                                    }
+                                    onClick={() => setShowCartModal(true)}
+                                >
+                                    Cart
+                                </button>
+                            </Fragment>
+                        ) : null}
+                        {user?.role === "admin" ? (
+                            isAdminView ? (
+                                <button
+                                    className={
+                                        "mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
+                                    }
+                                    onClick={() => router.push("/")}
+                                >
+                                    Client View
+                                </button>
+                            ) : (
+                                <button
                                     onClick={() => router.push("/admin-view")}
-
-                                        className={
-                                            "mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
-                                        }
-                                    >Admin View</button>
-                            ) : null
-                        }
-
-                        {
-                            isAuthUser ? <button
-                            onClick={handleLogout}
+                                    className={
+                                        "mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
+                                    }
+                                >
+                                    Admin View
+                                </button>
+                            )
+                        ) : null}
+                        {isAuthUser ? (
+                            <button
+                                onClick={handleLogout}
                                 className={
                                     "mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
                                 }
-                            >Logout</button> :
-                                <button
-                                onClick={()=>router.push("/login")}
-                                    className={
-                                        "mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
-                                    }
-                                >Login</button>
-                        }
-
-
-
-
+                            >
+                                Logout
+                            </button>
+                        ) : (
+                            <button
+                                onClick={() => router.push("/login")}
+                                className={
+                                    "mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
+                                }
+                            >
+                                Login
+                            </button>
+                        )}
                         <button
                             data-collapse-toggle="navbar-sticky"
                             type="button"
                             className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                             aria-controls="navbar-sticky"
                             aria-expanded="false"
-                            onClick={() => setShowNavModal(true)}
-
+                        //   onClick={() => setShowNavModal(true)}
                         >
                             <span className="sr-only">Open main menu</span>
                             <svg
@@ -155,9 +168,8 @@ function handleLogout (){
                                 ></path>
                             </svg>
                         </button>
-
                     </div>
-                    <NavItems isModalView={isAdminView} router={router} />
+                    <NavItems router={router} isAdminView={isAdminView} />
                 </div>
             </nav>
             <CommonModal
