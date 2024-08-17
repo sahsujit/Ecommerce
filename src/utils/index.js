@@ -189,17 +189,18 @@ export const AvailableSizes = [
 ];
 
 export const firebaseConfig = {
-  apiKey: "API_KEY",
-  authDomain: "AUTH_DOMAIN",
-  projectId: "PROJECT_ID",
-  storageBucket: "STROAGE_BUCKET",
-  messagingSenderId: "MESSAGING_SENDER_ID",
-  appId: "APP_ID",
-  measurementId: "MEASUREMENT_ID",
+  apiKey: "AIzaSyBqzNQbdTTqc-MkaHpesBgWhyEc9A_8HzE",
+  authDomain: "ecommerce-5f649.firebaseapp.com",
+  projectId: "ecommerce-5f649",
+  storageBucket: "ecommerce-5f649.appspot.com",
+  messagingSenderId: "525399263141",
+  appId: "1:525399263141:web:12383bd4e817718dce4a4c",
+  measurementId: "G-D7D15700F4"
 };
 
+
 export const firebaseStroageURL =
-  "YOUR_FIREBASE_STROAGE_URL";
+  "gs://ecommerce-5f649.appspot.com";
 
 export const addNewAddressFormControls = [
   {
