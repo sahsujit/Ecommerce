@@ -3,6 +3,9 @@ import "./globals.css";
 import GlobalState from "@/context";
 import Navbar from "@/components/Navbar"
 
+import { ToastContainer } from "react-toastify";
+
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -16,6 +19,7 @@ export default function RootLayout({ children }) {
       <body className={inter.className}>
         <GlobalState>
           <Navbar/>
+          <ToastContainer position="top-right" />
           <main className='flex min-h-screen flex-col mt-[80px]'>{children}</main>
 
         </GlobalState>

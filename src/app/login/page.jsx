@@ -46,9 +46,7 @@ async function handleLogin(){
   setComponentLevelLoader({ loading: true, id: "" });
   const res = await login(formData)
   if (res.success) {
-    toast.success(res.message, {
-      // position: toast.POSITION.TOP_RIGHT,
-    });
+    toast.success(res.message);
     setIsAuthUser(true);
     setUser(res?.finalData?.user);
     Cookies.set("token", res?.finalData?.token);
@@ -56,9 +54,7 @@ async function handleLogin(){
     setFormData(initialFormdata);
 
   } else {
-    toast.error(res.message, {
-      // position: toast.POSITION.TOP_RIGHT,
-    });
+    toast.error(res.message);
     setIsAuthUser(false);
     setComponentLevelLoader({ loading: false, id: "" });
   }

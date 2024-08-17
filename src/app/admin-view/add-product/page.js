@@ -120,9 +120,24 @@ export default function AdminAddNewProduct() {
 
 
   async function handleAddProduct() {
-    
+    setComponentLevelLoader({ loading: true, id: "" });
+
     const res = await addNewProduct(formData)
     console.log(res)
+
+    if (res.success) {
+      setComponentLevelLoader({ loading: false, id: "" });
+      toast.success(res.message);
+
+      setFormData(initialFormData);
+      setTimeout(() => {
+        router.push("/admin-view/all-products");
+      }, 1000);
+    } else {
+      toast.error(res.message);
+      setComponentLevelLoader({ loading: false, id: "" });
+      setFormData(initialFormData);
+    }
   }
 
 
@@ -180,11 +195,21 @@ export default function AdminAddNewProduct() {
             onClick={handleAddProduct}
             className="inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg text-white font-medium uppercase tracking-wide"
           >
-            Add Product
+           {
+            componentLevelLoader && componentLevelLoader.loading ? (
+              <ComponentLevelLoader
+                text={"Adding Product"}
+                color={"#ffffff"}
+                loading={componentLevelLoader && componentLevelLoader.loading}
+              />
+            ):(
+              "Add Product"
+            )
+           }
           </button>
         </div>
       </div>
-      {/* <Notification /> */}
+      <Notification />
     </div>
   );
 }
