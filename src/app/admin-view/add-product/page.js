@@ -85,6 +85,10 @@ export default function AdminAddNewProduct() {
 
 
 
+  useEffect(() => {
+    if (currentUpdatedProduct !== null) setFormData(currentUpdatedProduct)
+  }, [currentUpdatedProduct])
+
   async function handleImage(event) {
     const extractImageUrl = await helperForUPloadingImageToFirebase(
       event.target.files[0]
@@ -119,17 +123,45 @@ export default function AdminAddNewProduct() {
 
 
 
+  // async function handleAddProduct() {
+  //   setComponentLevelLoader({ loading: true, id: "" });
+
+  //   const res = currentUpdatedProduct !== null ? await updateProduct(formData) : await addNewProduct(formData)
+  //   console.log(res)
+
+  //   if (res.success) {
+  //     setComponentLevelLoader({ loading: false, id: "" });
+  //     toast.success(res.message);
+
+  //     setFormData(initialFormData);
+  //     setCurrentUpdatedProduct(null)
+  //     setTimeout(() => {
+  //       router.push("/admin-view/all-products");
+  //     }, 1000);
+  //   } else {
+  //     toast.error(res.message);
+  //     setComponentLevelLoader({ loading: false, id: "" });
+  //     setFormData(initialFormData);
+  //   }
+  // }
+
+
+
   async function handleAddProduct() {
     setComponentLevelLoader({ loading: true, id: "" });
+    const res =
+      currentUpdatedProduct !== null
+        ? await updateAProduct(formData)
+        : await addNewProduct(formData);
 
-    const res = await addNewProduct(formData)
-    console.log(res)
+    console.log(res);
 
     if (res.success) {
       setComponentLevelLoader({ loading: false, id: "" });
       toast.success(res.message);
 
       setFormData(initialFormData);
+      setCurrentUpdatedProduct(null)
       setTimeout(() => {
         router.push("/admin-view/all-products");
       }, 1000);
@@ -141,7 +173,10 @@ export default function AdminAddNewProduct() {
   }
 
 
+
   console.log(formData);
+
+
 
 
   return (
@@ -195,17 +230,17 @@ export default function AdminAddNewProduct() {
             onClick={handleAddProduct}
             className="inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg text-white font-medium uppercase tracking-wide"
           >
-           {
-            componentLevelLoader && componentLevelLoader.loading ? (
+            {componentLevelLoader && componentLevelLoader.loading ? (
               <ComponentLevelLoader
-                text={"Adding Product"}
+                text={currentUpdatedProduct !== null ? 'Updating Product' : "Adding Product"}
                 color={"#ffffff"}
                 loading={componentLevelLoader && componentLevelLoader.loading}
               />
-            ):(
+            ) : currentUpdatedProduct !== null ? (
+              "Update Product"
+            ) : (
               "Add Product"
-            )
-           }
+            )}
           </button>
         </div>
       </div>

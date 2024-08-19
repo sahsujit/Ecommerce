@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 export default function ProductButton({ item }) {
   const pathName = usePathname();
   const {
-    // setCurrentUpdatedProduct,
+    setCurrentUpdatedProduct,
     setComponentLevelLoader,
     componentLevelLoader,
     user,
@@ -35,7 +35,6 @@ export default function ProductButton({ item }) {
       setComponentLevelLoader({ loading: false, id: "" });
     }
   }
-
 
   return isAdminView ? (
     <>

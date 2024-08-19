@@ -1,6 +1,6 @@
 "use client"
 import { adminNavOptions, navOptions } from '@/utils';
-import React, { Fragment, useContext } from 'react'
+import React, { Fragment, useContext, useEffect } from 'react'
 import CommonModal from '../CommonModal';
 import { GlobalContext } from '@/context';
 import Cookies from "js-cookie";
@@ -53,7 +53,7 @@ export default function Navbar() {
 
 
 
-    const { user, isAuthUser, setIsAuthUser, setUser } = useContext(GlobalContext)
+    const { user, isAuthUser, setIsAuthUser, setUser, currentUpdatedProduct, setCurrentUpdatedProduct } = useContext(GlobalContext)
     console.log("user", user)
 
 
@@ -67,6 +67,15 @@ export default function Navbar() {
         router.push("/");
     }
 
+
+
+  useEffect(() => {
+    if (
+      pathName !== "/admin-view/add-product" &&
+      currentUpdatedProduct !== null
+    )
+      setCurrentUpdatedProduct(null);
+  }, [pathName]);
 
 
     return (

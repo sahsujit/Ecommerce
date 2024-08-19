@@ -8,6 +8,8 @@ export default function GlobalState({ children }) {
     const [showNavModal, setShowNavModal] = useState(false);
     const [isAuthUser, setIsAuthUser] = useState(null);
     const [user, setUser] = useState(null)
+    const [currentUpdatedProduct, setCurrentUpdatedProduct] = useState(null);
+
 
 
     const [componentLevelLoader, setComponentLevelLoader] = useState({
@@ -41,7 +43,9 @@ export default function GlobalState({ children }) {
             user,
             setUser,
             componentLevelLoader,
-            setComponentLevelLoader
+            setComponentLevelLoader,
+            currentUpdatedProduct,
+             setCurrentUpdatedProduct
         }}>
         {children}
 
