@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
         <GlobalState>
           <Navbar/>
           <ToastContainer position="top-right" />
-          <main className='flex min-h-screen flex-col mt-[80px]'>{children}</main>
+          <main className='flex min-h-screen text-black flex-col mt-[80px]'>{children}</main>
 
         </GlobalState>
             
