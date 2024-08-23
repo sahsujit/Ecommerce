@@ -106,6 +106,7 @@
 
 
 import connectToDb from "@/database";
+import AuthUser from "@/middleware/AuthUser";
 import Product from "@/models/product";
 import Joi from "joi";
 import { NextResponse } from "next/server";
@@ -128,9 +129,7 @@ export async function POST(req) {
   try {
     await connectToDb();
 
-    const isAuthUser = {
-        role:"admin"
-    }
+    const isAuthUser = await AuthUser(req)
 
     console.log(isAuthUser , 'sangam');
 
