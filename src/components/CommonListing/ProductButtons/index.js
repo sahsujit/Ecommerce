@@ -2,6 +2,7 @@
 
 import ComponentLevelLoader from "@/components/Loader/componentlevel";
 import { GlobalContext } from "@/context";
+import { addToCart } from "@/services/cart";
 // import { addToCart } from "@/services/cart";
 import { deleteAProduct } from "@/services/product";
 import { usePathname, useRouter } from "next/navigation";
@@ -15,26 +16,29 @@ export default function ProductButton({ item }) {
     setComponentLevelLoader,
     componentLevelLoader,
     user,
-    // showCartModal, setShowCartModal
+    showCartModal, setShowCartModal
   } = useContext(GlobalContext);
   const router = useRouter();
 
   const isAdminView = pathName.includes("admin-view");
 
-  async function handleDeleteProduct(item) {
-    setComponentLevelLoader({ loading: true, id: item._id });
+  async function handleAddToCart(getItem) {
+    setComponentLevelLoader({ loading: true, id: getItem._id });
+  const res = await addToCart({ productID: getItem._id, userID: user._id });
 
-    const res = await deleteAProduct(item._id);
-
-    if (res.success) {
-      setComponentLevelLoader({ loading: false, id: "" });
-      toast.success(res.message);
-      router.refresh();
-    } else {
-      toast.error(res.message);
-      setComponentLevelLoader({ loading: false, id: "" });
-    }
+  if (res.success) {
+    toast.success(res.message);
+    setComponentLevelLoader({ loading: false, id: "" });
+    setShowCartModal(true);
+  } else {
+    toast.error(res.message);
+    setComponentLevelLoader({ loading: false, id: "" });
+    setShowCartModal(true)
   }
+  console.log(user._id)
+
+  console.log(res);
+ }
 
   return isAdminView ? (
     <>

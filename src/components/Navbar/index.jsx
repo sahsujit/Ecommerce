@@ -5,6 +5,7 @@ import CommonModal from '../CommonModal';
 import { GlobalContext } from '@/context';
 import Cookies from "js-cookie";
 import { usePathname, useRouter } from 'next/navigation';
+import CartModal from '../CartModal';
 
 
 
@@ -56,7 +57,11 @@ export default function Navbar() {
     const { user, isAuthUser, setIsAuthUser, setUser, currentUpdatedProduct, setCurrentUpdatedProduct } = useContext(GlobalContext)
     console.log("user", user)
 
-
+    const {
+       
+        showCartModal,
+        setShowCartModal
+      } = useContext(GlobalContext);
     const { showNavModal, setShowNavModal } = useContext(GlobalContext);
 
     function handleLogout() {
@@ -160,7 +165,7 @@ export default function Navbar() {
                             className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
                             aria-controls="navbar-sticky"
                             aria-expanded="false"
-                        //   onClick={() => setShowNavModal(true)}
+                          onClick={() => setShowNavModal(true)}
                         >
                             <span className="sr-only">Open main menu</span>
                             <svg
@@ -193,7 +198,7 @@ export default function Navbar() {
                 show={showNavModal}
                 setShow={setShowNavModal}
             />
-            {/* {showCartModal && <CartModal />} */}
+            {showCartModal && <CartModal />}
         </>
     )
 }
