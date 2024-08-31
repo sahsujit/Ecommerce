@@ -12,11 +12,22 @@ export default function GlobalState({ children }) {
 
 const [cartItems,setCartItems] = useState([])
   const [showCartModal, setShowCartModal] = useState(false);
+  const [pageLevelLoader, setPageLevelLoader] = useState(true);
 
   const [componentLevelLoader, setComponentLevelLoader] = useState({
     loading: false,
     id: "",
   });
+
+  const [addresses, setAddresses] = useState([]);
+  const [addressFormData, setAddressFormData] = useState({
+    fullName: "",
+    city: "",
+    country: "",
+    postalCode: "",
+    address: "",
+  });
+
 
   useEffect(() => {
     try {
@@ -51,6 +62,12 @@ const [cartItems,setCartItems] = useState([])
       setShowCartModal,
       cartItems,
       setCartItems,
+      pageLevelLoader,
+      setPageLevelLoader,
+      addresses,
+      setAddresses,
+      addressFormData,
+      setAddressFormData
     }}>
     {children}
 
