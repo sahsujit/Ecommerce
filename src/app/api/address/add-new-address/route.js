@@ -15,15 +15,16 @@ const AddNewAddress = Joi.object({
 
 export const dynamic = "force-dynamic";
 
-
-export async function POST(req){
-  try{
+export async function POST(req) {
+  try {
     await connectToDB();
+
     const isAuthUser = await AuthUser(req);
-    if(!isAuthUser){
+
+    if (isAuthUser) {
       const data = await req.json();
 
-      const {fullName, address, city, country, postalCode, userID} = data
+      const { fullName, address, city, country, postalCode, userID } = data;
 
       const { error } = AddNewAddress.validate({
         fullName,
@@ -41,7 +42,7 @@ export async function POST(req){
         });
       }
 
-      const newlyAddedAddress = await Address.create(data)
+      const newlyAddedAddress = await Address.create(data);
 
       if (newlyAddedAddress) {
         return NextResponse.json({
@@ -54,14 +55,13 @@ export async function POST(req){
           message: "failed to add an address ! Please try again later",
         });
       }
-
-    }else {
+    } else {
       return NextResponse.json({
         success: false,
         message: "You are not authenticated",
       });
     }
-  }catch (e) {
+  } catch (e) {
     console.log(e);
     return NextResponse.json({
       success: false,

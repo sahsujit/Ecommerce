@@ -28,21 +28,16 @@ const [cartItems,setCartItems] = useState([])
     address: "",
   });
 
-
   useEffect(() => {
-    try {
-      if (Cookies.get("token") !== undefined) {
-        setIsAuthUser(true);
-        const userData = JSON.parse(localStorage.getItem("user")) || {};
-        setUser(userData);
-      } else {
-        setIsAuthUser(false);
-        setUser({}); // unauthenticated user
-      }
-    } catch (error) {
-      console.error("Error in GlobalState useEffect:", error);
+    if (Cookies.get("token") !== undefined) {
+      setIsAuthUser(true);
+      const userData = JSON.parse(localStorage.getItem("user")) || {};
+      const getCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+      setUser(userData);
+      setCartItems(getCartItems);
+    } else {
       setIsAuthUser(false);
-      setUser({});
+      setUser({}); //unauthenticated user
     }
   }, [Cookies]);
 

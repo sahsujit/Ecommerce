@@ -33,7 +33,86 @@ export default function Account() {
   const [currentEditedAddressId, setCurrentEditedAddressId] = useState(null);
   const router = useRouter()
 
- 
+  async function extractAllAddresses() {
+    setPageLevelLoader(true);
+    const res = await fetchAllAddresses(user?._id);
+
+    if (res.success) {
+      setPageLevelLoader(false);
+
+      setAddresses(res.data);
+    }
+  }
+
+  async function handleAddOrUpdateAddress() {
+    setComponentLevelLoader({ loading: true, id: "" });
+    const res =
+      currentEditedAddressId !== null
+        ? await updateAddress({
+            ...addressFormData,
+            _id: currentEditedAddressId,
+          })
+        : await addNewAddress({ ...addressFormData, userID: user?._id });
+
+    console.log(res);
+
+    if (res.success) {
+      setComponentLevelLoader({ loading: false, id: "" });
+      toast.success(res.message);
+      setAddressFormData({
+        fullName: "",
+        city: "",
+        country: "",
+        postalCode: "",
+        address: "",
+      });
+      extractAllAddresses();
+      setCurrentEditedAddressId(null);
+    } else {
+      setComponentLevelLoader({ loading: false, id: "" });
+      toast.error(res.message);
+      setAddressFormData({
+        fullName: "",
+        city: "",
+        country: "",
+        postalCode: "",
+        address: "",
+      });
+    }
+  }
+
+  function handleUpdateAddress(getCurrentAddress) {
+    setShowAddressForm(true);
+    setAddressFormData({
+      fullName: getCurrentAddress.fullName,
+      city: getCurrentAddress.city,
+      country: getCurrentAddress.country,
+      postalCode: getCurrentAddress.postalCode,
+      address: getCurrentAddress.address,
+    });
+    setCurrentEditedAddressId(getCurrentAddress._id);
+  }
+
+  async function handleDelete(getCurrentAddressID) {
+    setComponentLevelLoader({ loading: true, id: getCurrentAddressID });
+
+    const res = await deleteAddress(getCurrentAddressID);
+
+    if (res.success) {
+      setComponentLevelLoader({ loading: false, id: "" });
+
+      toast.success(res.message);
+      extractAllAddresses();
+    } else {
+      setComponentLevelLoader({ loading: false, id: "" });
+
+      toast.error(res.message);
+    }
+  }
+
+  useEffect(() => {
+    if (user !== null) extractAllAddresses();
+  }, [user]);
 
   return (
     <section>
