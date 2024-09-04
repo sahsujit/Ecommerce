@@ -3,6 +3,7 @@
 import Notification from "@/components/Notification";
 import { GlobalContext } from "@/context";
 import { fetchAllAddresses } from "@/services/address";
+import { createNewOrder } from "@/services/order";
 import { callStripeSession } from "@/services/stripe";
 import { loadStripe } from "@stripe/stripe-js";
 // import { createNewOrder } from "@/services/order";
@@ -36,10 +37,61 @@ export default function Checkout() {
 
 
 
-  async function handleCheckout(){
+  useEffect(() => {
+
+    async function createFinalOrder() {
+      const isStripe = await JSON.parse(localStorage.getItem('stripe'));
+
+      if (isStripe && params.get("status")
+        === "success" && cartItems && cartItems.length > 0) {
+          setIsOrderProcessing(true);
+          const getCheckoutFormData = JSON.parse(
+            localStorage.getItem("checkoutFormData")
+          );
+  
+          const createFinalCheckoutFormData = {
+            user: user?._id,
+            shippingAddress: getCheckoutFormData.shippingAddress,
+            orderItems: cartItems.map((item) => ({
+              qty: 1,
+              product: item.productID,
+            })),
+            paymentMethod: "Stripe",
+            totalPrice: cartItems.reduce(
+              (total, item) => item.productID.price + total,
+              0
+            ),
+            isPaid: true,
+            isProcessing: true,
+            paidAt: new Date(),
+          };
+
+          const res = await createNewOrder(createFinalCheckoutFormData);
+
+          if (res.success) {
+            setIsOrderProcessing(false);
+            setOrderSuccess(true);
+            toast.success(res.message);
+          } else {
+            setIsOrderProcessing(false);
+            setOrderSuccess(false);
+            toast.error(res.message,);
+          }
+  
+
+      }
+    }
+
+    createFinalOrder()
+
+
+  }, [params.get("status", cartItems)])
+
+
+  async function handleCheckout() {
     const stripe = await stripePromise;
 
-    
+
     const createLineItems = cartItems.map((item) => ({
       price_data: {
         currency: "usd",
@@ -78,6 +130,8 @@ export default function Checkout() {
     if (user !== null) getAllAddresses();
   }, [user]);
 
+
+
   function handleSelectedAddress(getAddress) {
     if (getAddress._id === selectedAddress) {
       setSelectedAddress(null);
@@ -102,6 +156,50 @@ export default function Checkout() {
       },
     });
   }
+
+
+  useEffect(() => {
+    if (orderSuccess) {
+      setTimeout(() => {
+        
+        router.push("/orders");
+      }, [3000]);
+    }
+  }, [orderSuccess]);
+
+  if (orderSuccess) {
+    return (
+      <section className="h-screen bg-gray-200">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mx-auto mt-8 max-w-screen-xl px-4 sm:px-6 lg:px-8 ">
+            <div className="bg-white shadow">
+              <div className="px-4 py-6 sm:px-8 sm:py-10 flex flex-col gap-5">
+                <h1 className="font-bold text-lg">
+                  Your payment is successfull and you will be redirected to
+                  orders page in 3 seconds !
+                </h1>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+
+  if (isOrderProcessing) {
+    return (
+      <div className="w-full min-h-screen flex justify-center items-center">
+        <PulseLoader
+          color={"#000000"}
+          loading={isOrderProcessing}
+          size={30}
+          data-testid="loader"
+        />
+      </div>
+    );
+  }
+
 
 
   return (
@@ -147,9 +245,8 @@ export default function Checkout() {
                 <div
                   onClick={() => handleSelectedAddress(item)}
                   key={item._id}
-                  className={`border p-6 ${
-                    item._id === selectedAddress ? "border-red-900" : ""
-                  }`}
+                  className={`border p-6 ${item._id === selectedAddress ? "border-red-900" : ""
+                    }`}
                 >
                   <p>Name : {item.fullName}</p>
                   <p>Address : {item.address}</p>
@@ -180,9 +277,9 @@ export default function Checkout() {
                 $
                 {cartItems && cartItems.length
                   ? cartItems.reduce(
-                      (total, item) => item.productID.price + total,
-                      0
-                    )
+                    (total, item) => item.productID.price + total,
+                    0
+                  )
                   : "0"}
               </p>
             </div>
@@ -196,9 +293,9 @@ export default function Checkout() {
                 $
                 {cartItems && cartItems.length
                   ? cartItems.reduce(
-                      (total, item) => item.productID.price + total,
-                      0
-                    )
+                    (total, item) => item.productID.price + total,
+                    0
+                  )
                   : "0"}
               </p>
             </div>
