@@ -1,5 +1,6 @@
 "use client"
 import Cookies from "js-cookie";
+import { usePathname, useRouter } from "next/navigation";
 import { createContext, useEffect, useState } from "react";
 
 export const GlobalContext = createContext(null)
@@ -14,13 +15,23 @@ export const initialCheckoutFormData = {
   isProcessing: true,
 };
 
+
+
+const protectedRoutes = ["cart", "checkout", "account", "orders", "admin-view"];
+
+const protectedAdminRoutes = [
+  "/admin-view",
+  "/admin-view/add-product",
+  "/admin-view/all-products",
+];
+
 export default function GlobalState({ children }) {
   const [showNavModal, setShowNavModal] = useState(false);
   const [isAuthUser, setIsAuthUser] = useState(null);
   const [user, setUser] = useState(null)
   const [currentUpdatedProduct, setCurrentUpdatedProduct] = useState(null);
 
-const [cartItems,setCartItems] = useState([])
+  const [cartItems, setCartItems] = useState([])
   const [showCartModal, setShowCartModal] = useState(false);
   const [pageLevelLoader, setPageLevelLoader] = useState(true);
 
@@ -39,9 +50,19 @@ const [cartItems,setCartItems] = useState([])
   });
 
 
+
+  const [allOrdersForUser, setAllOrdersForUser] = useState([]);
+  const [orderDetails, setOrderDetails] = useState(null);
+  const [allOrdersForAllUsers, setAllOrdersForAllUsers] = useState([]);
+
   const [checkoutFormData, setCheckoutFormData] = useState(
     initialCheckoutFormData
   );
+
+  const router = useRouter();
+  const pathName = usePathname()
+
+
 
   useEffect(() => {
     if (Cookies.get("token") !== undefined) {
@@ -55,6 +76,18 @@ const [cartItems,setCartItems] = useState([])
       setUser({}); //unauthenticated user
     }
   }, [Cookies]);
+
+
+  useEffect(() => {
+    if (user && Object.keys(user).length === 0 
+    && protectedRoutes.indexOf(pathName) > -1)
+      router.push("/login")
+  }, [user, pathName])
+
+  useEffect(()=>{
+    if(user !== null && user && Object.keys(user).length > 0 && user?.role !== "admin" && protectedAdminRoutes.indexOf(pathName) > -1)
+      router.push("/unauthorized-page")
+  },[user,pathName])
 
   return <GlobalContext.Provider
     value={{
@@ -79,7 +112,13 @@ const [cartItems,setCartItems] = useState([])
       addressFormData,
       setAddressFormData,
       checkoutFormData,
-      setCheckoutFormData
+      setCheckoutFormData,
+      allOrdersForUser,
+      setAllOrdersForUser,
+      orderDetails,
+      setOrderDetails,
+      allOrdersForAllUsers,
+      setAllOrdersForAllUsers,
     }}>
     {children}
 
