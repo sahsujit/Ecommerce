@@ -1,3 +1,5 @@
+
+
 "use client";
 
 import InputComponent from "@/components/FormElements/InputComponent";
@@ -43,7 +45,7 @@ async function helperForUPloadingImageToFirebase(file) {
   return new Promise((resolve, reject) => {
     uploadImage.on(
       "state_changed",
-      (snapshot) => { },
+      (snapshot) => {},
       (error) => {
         console.log(error);
         reject(error);
@@ -83,11 +85,9 @@ export default function AdminAddNewProduct() {
 
   const router = useRouter();
 
-
-
   useEffect(() => {
-    if (currentUpdatedProduct !== null) setFormData(currentUpdatedProduct)
-  }, [currentUpdatedProduct])
+    if (currentUpdatedProduct !== null) setFormData(currentUpdatedProduct);
+  }, [currentUpdatedProduct]);
 
   async function handleImage(event) {
     const extractImageUrl = await helperForUPloadingImageToFirebase(
@@ -101,9 +101,6 @@ export default function AdminAddNewProduct() {
       });
     }
   }
-
-
-
 
   function handleTileClick(getCurrentItem) {
     let cpySizes = [...formData.sizes];
@@ -120,32 +117,6 @@ export default function AdminAddNewProduct() {
       sizes: cpySizes,
     });
   }
-
-
-
-  // async function handleAddProduct() {
-  //   setComponentLevelLoader({ loading: true, id: "" });
-
-  //   const res = currentUpdatedProduct !== null ? await updateProduct(formData) : await addNewProduct(formData)
-  //   console.log(res)
-
-  //   if (res.success) {
-  //     setComponentLevelLoader({ loading: false, id: "" });
-  //     toast.success(res.message);
-
-  //     setFormData(initialFormData);
-  //     setCurrentUpdatedProduct(null)
-  //     setTimeout(() => {
-  //       router.push("/admin-view/all-products");
-  //     }, 1000);
-  //   } else {
-  //     toast.error(res.message);
-  //     setComponentLevelLoader({ loading: false, id: "" });
-  //     setFormData(initialFormData);
-  //   }
-  // }
-
-
 
   async function handleAddProduct() {
     setComponentLevelLoader({ loading: true, id: "" });
@@ -172,15 +143,10 @@ export default function AdminAddNewProduct() {
     }
   }
 
-
-
   console.log(formData);
 
-
-
-
   return (
-    <div className="w-full  text-black mr-0 mb-0 ml-0 relative">
+    <div className="w-full mt-5 mr-0 mb-0 ml-0 relative">
       <div className="flex flex-col items-start justify-start p-10 bg-white shadow-2xl rounded-xl relative">
         <div className="w-full mt-6 mr-0 mb-0 ml-0 space-y-8">
           <input

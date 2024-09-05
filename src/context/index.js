@@ -79,16 +79,27 @@ export default function GlobalState({ children }) {
 
 
   useEffect(() => {
-    if (user && Object.keys(user).length === 0 
-    && protectedRoutes.indexOf(pathName) > -1)
-      router.push("/login")
-  }, [user, pathName])
+    if (
+      pathName !== "/register" &&
+      !pathName.includes("product") &&
+      pathName !== "/" &&
+      user &&
+      Object.keys(user).length === 0 &&
+      protectedRoutes.includes(pathName) > -1
+    )
+      router.push("/login");
+  }, [user, pathName]);
 
-  useEffect(()=>{
-    if(user !== null && user && Object.keys(user).length > 0 && user?.role !== "admin" && protectedAdminRoutes.indexOf(pathName) > -1)
-      router.push("/unauthorized-page")
-  },[user,pathName])
-
+  useEffect(() => {
+    if (
+      user !== null &&
+      user &&
+      Object.keys(user).length > 0 &&
+      user?.role !== "admin" &&
+      protectedAdminRoutes.indexOf(pathName) > -1
+    )
+      router.push("/unauthorized-page");
+  }, [user, pathName]);
   return <GlobalContext.Provider
     value={{
       showNavModal,

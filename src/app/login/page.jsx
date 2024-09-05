@@ -1,3 +1,4 @@
+
 "use client";
 
 import InputComponent from "@/components/FormElements/InputComponent";
@@ -41,24 +42,26 @@ export default function Login() {
       : false;
   }
 
-  
-async function handleLogin(){
-  setComponentLevelLoader({ loading: true, id: "" });
-  const res = await login(formData)
-  if (res.success) {
-    toast.success(res.message);
-    setIsAuthUser(true);
-    setUser(res?.finalData?.user);
-    Cookies.set("token", res?.finalData?.token);
-    localStorage.setItem("user", JSON.stringify(res?.finalData?.user));
-    setFormData(initialFormdata);
+  async function handleLogin() {
+    setComponentLevelLoader({ loading: true, id: "" });
+    const res = await login(formData);
 
-  } else {
-    toast.error(res.message);
-    setIsAuthUser(false);
-    setComponentLevelLoader({ loading: false, id: "" });
+    console.log(res);
+
+    if (res.success) {
+      toast.success(res.message);
+      setIsAuthUser(true);
+      setUser(res?.finalData?.user);
+      setFormData(initialFormdata);
+      Cookies.set("token", res?.finalData?.token);
+      localStorage.setItem("user", JSON.stringify(res?.finalData?.user));
+      setComponentLevelLoader({ loading: false, id: "" });
+    } else {
+      toast.error(res.message);
+      setIsAuthUser(false);
+      setComponentLevelLoader({ loading: false, id: "" });
+    }
   }
-}
 
   console.log(isAuthUser, user);
 
@@ -67,7 +70,7 @@ async function handleLogin(){
   }, [isAuthUser]);
 
   return (
-    <div className="bg-white text-black relative">
+    <div className="bg-white relative">
       <div className="flex flex-col items-center justify-between pt-0 pr-10 pb-0 pl-10 mt-8 mr-auto xl:px-5 lg:flex-row">
         <div className="flex flex-col justify-center items-center w-full pr-10 pl-10 lg:flex-row">
           <div className="w-full mt-10 mr-0 mb-0 ml-0 relative max-w-2xl lg:mt-0 lg:w-5/12">
@@ -99,8 +102,7 @@ async function handleLogin(){
                   disabled={!isValidForm()}
                   onClick={handleLogin}
                 >
-                   
-                   {componentLevelLoader && componentLevelLoader.loading ? (
+                  {componentLevelLoader && componentLevelLoader.loading ? (
                     <ComponentLevelLoader
                       text={"Logging In"}
                       color={"#ffffff"}
@@ -110,7 +112,7 @@ async function handleLogin(){
                     />
                   ) : (
                     "Login"
-                  )} 
+                  )}
                 </button>
                 <div className="flex flex-col gap-2">
                   <p>New to website ?</p>
@@ -132,8 +134,6 @@ async function handleLogin(){
     </div>
   );
 }
-
-
 
 
 

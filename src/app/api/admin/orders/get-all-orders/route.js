@@ -1,46 +1,40 @@
 import connectToDB from "@/database";
 import AuthUser from "@/middleware/AuthUser";
-import Product from "@/models/product";
+import Order from "@/models/order";
 import { NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-export async function DELETE(req) {
+export async function GET(req) {
   try {
     await connectToDB();
     const isAuthUser = await AuthUser(req);
 
     if (isAuthUser?.role === "admin") {
-      const { searchParams } = new URL(req.url);
-      const id = searchParams.get("id");
+      const getAllOrders = await Order.find({})
+        .populate("orderItems.product")
+        .populate("user");
 
-      if (!id)
-        return NextResponse.json({
-          success: false,
-          message: "Product ID is required",
-        });
-
-      const deletedProduct = await Product.findByIdAndDelete(id);
-
-      if (deletedProduct) {
+      if (getAllOrders) {
         return NextResponse.json({
           success: true,
-          message: "Product deleted successfully",
+          data: getAllOrders,
         });
       } else {
         return NextResponse.json({
           success: false,
-          message: "Failed to delete the product ! Please try again",
+          message:
+            "failed to fetch the orders ! Please try again after some time.",
         });
       }
     } else {
       return NextResponse.json({
         success: false,
-        message: "You are not authenticated",
+        message: "You are not autorized !",
       });
     }
   } catch (e) {
-    console.log(error);
+    console.log(e);
     return NextResponse.json({
       success: false,
       message: "Something went wrong ! Please try again later",

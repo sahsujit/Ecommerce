@@ -1,11 +1,12 @@
 "use client"
-import { GlobalContext } from "@/context"
-import { getAllOrdersForUser } from "@/services/order"
-import { useContext, useEffect } from "react"
-import { PulseLoader } from "react-spinners"
-import { toast } from "react-toastify"
-import Notification from "@/components/Notification";
 
+import Notification from "@/components/Notification";
+import { GlobalContext } from "@/context";
+import { getAllOrdersForUser } from "@/services/order";
+import { useRouter } from "next/navigation";
+import { useContext, useEffect } from "react";
+import { PulseLoader } from "react-spinners";
+import { toast } from "react-toastify";
 
 export default function Orders(){
     const {
@@ -15,6 +16,8 @@ export default function Orders(){
     allOrdersForUser,
     setAllOrdersForUser,
     } = useContext(GlobalContext)
+
+    const router = useRouter()
 
     async function extractAllOrders(){
 
