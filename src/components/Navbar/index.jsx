@@ -18,13 +18,13 @@ function NavItems({ isModalView = false, isAdminView, router }) {
             id="nav-items"
         >
             <ul
-                className={`flex flex-col p-4 md:p-0 mt-4 font-medium  rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 bg-white ${isModalView ? "border-none" : "border border-gray-100"
+                className={`flex flex-col p-4 md:p-0 mt-4 font-medium  rounded-lg md:flex-row md:space-x-8 md:mt-0 md:border-0 ${isModalView ? "border-none" : "border border-richbalck-100"
                     }`}
             >
                 {isAdminView
                     ? adminNavOptions.map((item) => (
                         <li
-                            className="cursor-pointer block py-2 pl-3 pr-4 text-gray-900 rounded md:p-0"
+                            className="cursor-pointer block py-2 pl-3 pr-4 text-richblack-25 rounded md:p-0"
                             key={item.id}
                             onClick={() => router.push(item.path)}
                         >
@@ -33,7 +33,7 @@ function NavItems({ isModalView = false, isAdminView, router }) {
                     ))
                     : navOptions.map((item) => (
                         <li
-                            className="cursor-pointer block py-2 pl-3 pr-4 text-gray-900 rounded md:p-0"
+                            className="cursor-pointer block py-2 pl-3 pr-4  text-richblack-25 rounded md:p-0"
                             key={item.id}
                             onClick={() => router.push(item.path)}
                         >
@@ -88,7 +88,7 @@ export default function Navbar() {
            
 
 
-            <nav className="bg-white text-black fixed w-full z-20 top-0 left-0 border-b border-gray-200">
+            <nav className="bg-richblack-900  fixed w-full z-20 top-0 left-0 border-b-[1px] border-b-richblack-700">
                 <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
                     <div
                         onClick={() => router.push("/")}
@@ -103,7 +103,7 @@ export default function Navbar() {
                             <Fragment>
                                 <button
                                     className={
-                                        "mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
+                                        "mt-1.5 inline-block px-5 py-3 text-xs font-medium upprcase tracking-wide rounded-[8px] border border-richblack-700 bg-richblack-800 text-richblack-100"
                                     }
                                     onClick={() => router.push('/account')}
                                 >
@@ -111,7 +111,7 @@ export default function Navbar() {
                                 </button>
                                 <button
                                     className={
-                                        "mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
+                                        "mt-1.5 inline-block px-5 py-3 text-xs font-medium upprcase tracking-wide rounded-[8px] border border-richblack-700 bg-richblack-800 text-richblack-100"
                                     }
                                     onClick={() => setShowCartModal(true)}
                                 >
@@ -123,7 +123,7 @@ export default function Navbar() {
                             isAdminView ? (
                                 <button
                                     className={
-                                        "mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
+                                        "mt-1.5 inline-block px-5 py-3 text-xs font-medium upprcase tracking-wide rounded-[8px] border border-richblack-700 bg-richblack-800 text-richblack-100"
                                     }
                                     onClick={() => router.push("/")}
                                 >
@@ -133,7 +133,7 @@ export default function Navbar() {
                                 <button
                                     onClick={() => router.push("/admin-view")}
                                     className={
-                                        "mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
+                                        "mt-1.5 inline-block px-5 py-3 text-xs font-medium upprcase tracking-wide rounded-[8px] border border-richblack-700 bg-richblack-800 text-richblack-100"
                                     }
                                 >
                                     Admin View
@@ -144,7 +144,7 @@ export default function Navbar() {
                             <button
                                 onClick={handleLogout}
                                 className={
-                                    "mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
+                                    "mt-1.5 inline-block px-5 py-3 text-xs font-medium upprcase tracking-wide rounded-[8px] border border-richblack-700 bg-richblack-800 text-richblack-100"
                                 }
                             >
                                 Logout
@@ -153,7 +153,7 @@ export default function Navbar() {
                             <button
                                 onClick={() => router.push("/login")}
                                 className={
-                                    "mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium upprcase tracking-wide text-white"
+                                    "mt-1.5 inline-block px-5 py-3 text-xs font-medium upprcase tracking-wide rounded-[8px] border border-richblack-700 bg-richblack-800 text-richblack-100"
                                 }
                             >
                                 Login

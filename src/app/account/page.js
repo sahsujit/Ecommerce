@@ -49,9 +49,9 @@ export default function Account() {
     const res =
       currentEditedAddressId !== null
         ? await updateAddress({
-            ...addressFormData,
-            _id: currentEditedAddressId,
-          })
+          ...addressFormData,
+          _id: currentEditedAddressId,
+        })
         : await addNewAddress({ ...addressFormData, userID: user?._id });
 
     console.log(res);
@@ -116,11 +116,10 @@ export default function Account() {
 
   return (
     <section>
-      <div className="mx-auto bg-gray-100 px-4 sm:px-6 lg:px-8">
-        <div className="bg-white shadow">
+      <div className="mx-auto  px-4 sm:px-6 lg:px-8">
+        <div className=" shadow">
           <div className="p-6 sm:p-12">
             <div className="flex flex-col space-y-4 md:space-y-0 md:space-x-6 md:flex-row">
-              {/* we have render random user image here */}
             </div>
             <div className="flex flex-col flex-1">
               <h4 className="text-lg font-semibold text-center md:text-left">
@@ -129,44 +128,42 @@ export default function Account() {
               <p>{user?.email}</p>
               <p>{user?.role}</p>
             </div>
-            <button onClick={()=>router.push('/orders')} className="mt-5  inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide">
+            <button onClick={() => router.push('/orders')} className="mt-5  inline-block bg-yellow-50 text-black shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)]  hover:shadow-none hover:scale-95 transition-all duration-200 rounded-md px-5 py-3 text-xs font-medium uppercase tracking-wide">
               View Your Orders
             </button>
             <div className="mt-6">
-              <h1 className="font-bold text-lg">Your Addresses :</h1>
+              <h1 className="font-bold text-richblack-25 text-lg">Your Addresses :</h1>
               {pageLevelLoader ? (
                 <PulseLoader
-                  color={"#000000"}
+                  color={"#fff"}
                   loading={pageLevelLoader}
                   size={15}
                   data-testid="loader"
                 />
               ) : (
-                <div className="mt-4 flex flex-col gap-4">
+                <div className="mt-4 flex flex-col  gap-4">
                   {addresses && addresses.length ? (
                     addresses.map((item) => (
-                      <div className="border p-6" key={item._id}>
-                        <p>Name : {item.fullName}</p>
-                        <p>Address : {item.address}</p>
-                        <p>City : {item.city}</p>
-                        <p>Country : {item.country}</p>
-                        <p>PostalCode : {item.postalCode}</p>
+                      <div className="border bg-richblack-800 rounded-md border-richblack-600 p-6" key={item._id}>
+                        <p>Name :<span className="text-richblack-100"> {item.fullName}</span></p>
+                        <p>Address : <span className="text-richblack-100"> {item.address}</span></p>
+                        <p>City : <span className="text-richblack-100"> {item.city}</span></p>
+                        <p>Country : <span className="text-richblack-100"> {item.country}</span></p>
+                        <p>PostalCode : <span className="text-richblack-100"> {item.postalCode}</span></p>
                         <button
                           onClick={() => handleUpdateAddress(item)}
-                          className="mt-5 mr-5 inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
-                        >
+                          className="mt-5 mr-5  inline-block bg-yellow-50 text-black shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)]  hover:shadow-none hover:scale-95 transition-all duration-200 rounded-md px-5 py-3 text-xs font-medium uppercase tracking-wide"                        >
                           Update
                         </button>
                         <button
                           onClick={() => handleDelete(item._id)}
-                          className="mt-5  inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
-                        >
+                          className="mt-5  inline-block bg-yellow-50 text-black shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)]  hover:shadow-none hover:scale-95 transition-all duration-200 rounded-md px-5 py-3 text-xs font-medium uppercase tracking-wide"                        >
                           {componentLevelLoader &&
-                          componentLevelLoader.loading &&
-                          componentLevelLoader.id === item._id ? (
+                            componentLevelLoader.loading &&
+                            componentLevelLoader.id === item._id ? (
                             <ComponentLevelLoader
                               text={"Deleting"}
-                              color={"#ffffff"}
+                              color={"#000814"}
                               loading={
                                 componentLevelLoader &&
                                 componentLevelLoader.loading
@@ -187,8 +184,7 @@ export default function Account() {
             <div className="mt-4">
               <button
                 onClick={() => setShowAddressForm(!showAddressForm)}
-                className="mt-5  inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
-              >
+                className="mt-5  inline-block bg-yellow-50 text-black shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)]  hover:shadow-none hover:scale-95 transition-all duration-200 rounded-md px-5 py-3 text-xs font-medium uppercase tracking-wide"              >
                 {showAddressForm ? "Hide Address Form" : "Add New Address"}
               </button>
             </div>
@@ -212,12 +208,11 @@ export default function Account() {
                 </div>
                 <button
                   onClick={handleAddOrUpdateAddress}
-                  className="mt-5  inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
-                >
+                  className="mt-5  inline-block bg-yellow-50 text-black shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)]  hover:shadow-none hover:scale-95 transition-all duration-200 rounded-md px-5 py-3 text-xs font-medium uppercase tracking-wide"                >
                   {componentLevelLoader && componentLevelLoader.loading ? (
                     <ComponentLevelLoader
                       text={"Saving"}
-                      color={"#ffffff"}
+                      color={"#000814"}
                       loading={
                         componentLevelLoader && componentLevelLoader.loading
                       }

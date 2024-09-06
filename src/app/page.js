@@ -1,5 +1,6 @@
 "use client";
 
+import Footer from "@/components/Footer";
 import { GlobalContext } from "@/context";
 import { getAllAdminProducts } from "@/services/product";
 import { useRouter } from "next/navigation";
@@ -26,14 +27,17 @@ export default function Home() {
   console.log(products);
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+    <>
+     <main className="flex min-h-screen bg-richblack-900 text-white flex-col items-center justify-between p-24">
       <section className="">
-        <div className="grid max-w-screen-xl px-4 py-8 mx-suto  lg:gap-8 xl:gap-0 lg:py-16 lg:grid-cols-12">
-          <div className="mr-auto place-self-center lg:col-span-7">
-            <h1 className="max-w-2xl mb-4 text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl">
-              Best Fashion Collection
+        <div className="grid max-w-screen-xl px-4 py-8 mx-auto   lg:gap-8  xl:gap-0 lg:py-16 lg:grid-cols-12">
+          <div className="mr-auto  place-self-center lg:col-span-7">
+            <h1 className="max-w-2xl mb-4 lg:w-[600px] text-4xl font-extrabold tracking-tight leading-none md:text-5xl xl:text-6xl">
+              Best Fashion {" "} <span className="bg-gradient-to-b from-[#1FA2FF] via-[#12D8FA] to-[#A6FFCB] text-transparent bg-clip-text font-bold">
+                      Collection
+                </span> 
             </h1>
-            <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl">
+            <p className="max-w-2xl mb-6 lg:w-[600px] text-richblack-300 font-light text-gray-500 lg:mb-8 md:text-lg  lg:text-xl">
               Quisquemos sodales suscipit tortor ditaemcos condimentum de cosmo
               lacus meleifend menean diverra loremous.
             </p>
@@ -41,7 +45,8 @@ export default function Home() {
             <button
               type="button"
               onClick={() => router.push("/product/listing/all-products")}
-              className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white"
+              className="mt-1.5 inline-block bg-yellow-50 px-5 py-3 text-xs  uppercase 
+              tracking-wide text-black shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)]  hover:shadow-none hover:scale-95 transition-all duration-200 rounded-md font-bold" 
             >
               Explore Shop Collection
             </button>
@@ -59,12 +64,16 @@ export default function Home() {
               <div className="max-w-md mx-auto text-center lg:text-left">
                 <div>
                   <h2 className="text-xl font-bold text-gray-900 sm:text-3xl">
-                    Summer Sale Collection
+
+                    Summer Sale   {" "}
+                    <span className="bg-gradient-to-b from-[#1FA2FF] via-[#12D8FA] to-[#A6FFCB] text-transparent bg-clip-text font-bold">
+                      Collection
+                </span> 
                   </h2>
                 </div>
                 <button
                   onClick={() => router.push("/product/listing/all-products")}
-                  className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white"
+                  className=" inline-block mt-2 bg-yellow-50 px-5 py-3 text-xs  uppercase tracking-wide text-black shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)]  hover:shadow-none hover:scale-95 transition-all duration-200 rounded-md font-bold"
                 >
                   Shop ALL
                 </button>
@@ -88,16 +97,17 @@ export default function Home() {
                             <img
                               src={productItem.imageUrl}
                               alt="Sale Product Item"
-                              className="object-cover w-full rounded aspect-square"
+                              className="object-cover opacity-80 w-full rounded aspect-square"
                             />
                           </div>
                           <div className="mt-3">
-                            <h3 className="font-medium text-gray-900">
+                            <h3 className="font-medium text-richblack-50">
                               {productItem.name}
                             </h3>
-                            <p className="mt-1 text-sm text-gray-800">
+                            <p className="mt-1 text-sm text-richblack-5 ">
+                              RS.
                               ${productItem.price}{" "}
-                              <span className="text-red-700">{`(-${productItem.priceDrop}%) Off`}</span>
+                              <span className="text-[#f57224]">{`(-${productItem.priceDrop}%) Off`}</span>
                             </p>
                           </div>
                         </li>
@@ -110,7 +120,9 @@ export default function Home() {
         <div className="max-w-screen-xl px-4 py-8 mx-auto sm:px-6 sm:py-12 lg:px-8">
           <div className="text-center">
             <h2 className="text-xl font-bold text-gray-950 sm:text-3xl">
-              SHOP BY CATEGORY
+              SHOP BY <span className="bg-gradient-to-b from-[#1FA2FF] via-[#12D8FA] to-[#A6FFCB] text-transparent bg-clip-text font-bold">
+              CATEGORY
+                </span> 
             </h2>
           </div>
           <ul className="grid grid-cols-1 gap-4 mt-8 lg:grid-cols-3">
@@ -118,13 +130,13 @@ export default function Home() {
               <div className="relative block group">
                 <img
                   src="https://images.unsplash.com/photo-1618898909019-010e4e234c55?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
-                  className="object-cover w-full aspect-square"
+                  className="object-cover opacity-45 w-full aspect-square"
                 />
                 <div className="absolute inset-0 flex flex-col items-start justify-end p-6">
                   <h3 className="text-xl font-medium text-white">KIDS</h3>
                   <button
                     onClick={() => router.push("/product/listing/kids")}
-                    className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white"
+                    className="mt-1.5 inline-block bg-yellow-50 px-5 py-3 text-xs  uppercase tracking-wide text-black shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)]  hover:shadow-none hover:scale-95 transition-all duration-200 rounded-md font-bold"
                   >
                     Shop Now
                   </button>
@@ -135,14 +147,13 @@ export default function Home() {
               <div className="relative block group">
                 <img
                   src="https://images.unsplash.com/photo-1624623278313-a930126a11c3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=774&q=80"
-                  className="object-cover w-full aspect-square"
+                  className="object-cover opacity-45 w-full aspect-square"
                 />
                 <div className="absolute inset-0 flex flex-col items-start justify-end p-6">
                   <h3 className="text-xl font-medium text-white">WOMEN</h3>
                   <button
                     onClick={() => router.push("/product/listing/women")}
-                    className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white"
-                  >
+                    className="mt-1.5 inline-block bg-yellow-50 px-5 py-3 text-xs  uppercase tracking-wide text-black shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)]  hover:shadow-none hover:scale-95 transition-all duration-200 rounded-md font-bold"                  >
                     Shop Now
                   </button>
                 </div>
@@ -152,14 +163,13 @@ export default function Home() {
               <div className="relative block group">
                 <img
                   src="https://images.unsplash.com/photo-1593795899768-947c4929449d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2672&q=80"
-                  className="object-cover w-full aspect-square"
+                  className="object-cover opacity-45 w-full aspect-square"
                 />
                 <div className="absolute inset-0 flex flex-col items-start justify-end p-6">
                   <h3 className="text-xl font-medium text-white">MEN</h3>
                   <button
                     onClick={() => router.push("/product/listing/men")}
-                    className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium uppercase tracking-wide text-white"
-                  >
+                    className="mt-1.5 inline-block bg-yellow-50 px-5 py-3 text-xs  uppercase tracking-wide text-black shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)]  hover:shadow-none hover:scale-95 transition-all duration-200 rounded-md font-bold"                  >
                     Shop Now
                   </button>
                 </div>
@@ -168,6 +178,10 @@ export default function Home() {
           </ul>
         </div>
       </section>
+    
     </main>
+      <Footer/>
+    </>
+   
   );
 }

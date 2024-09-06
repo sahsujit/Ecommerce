@@ -8,13 +8,13 @@ export default function TileComponent({ data, selected = [], onClick }) {
             selected &&
             selected.length &&
             selected.map((item) => item.id).indexOf(dataItem.id) !== -1
-              ? "bg-black"
+              ? "bg-richblack-800 rounded-md "
               : ""
           }`}
           key={dataItem.id}
         >
           <span
-            className={`rounded-lg border border-black px-6 py-2 font-bold ${
+            className={`rounded-md w-[60px] border border-richblack-600 flex items-center justify-center     font-bold ${
               selected &&
               selected.length &&
               selected.map((item) => item.id).indexOf(dataItem.id) !== -1

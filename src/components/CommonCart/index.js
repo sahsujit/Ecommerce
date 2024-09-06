@@ -12,10 +12,10 @@ export default function CommonCart({
   const router = useRouter()
 
   return (
-    <section className="h-screen bg-gray-100">
-      <div className="mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="h-screen ">
+      <div className="mx-auto  px-4 sm:px-6 lg:px-8">
         <div className="mx-auto mt-8 max-w-screen-xl px-4 sm:px-6 lg:px-8">
-          <div className="bg-white shadow">
+          <div className="bg-richblack-800 rounded-md  shadow">
             <div className="px-4 py-6 sm:px-8 sm:py-10">
               <div className="flow-root">
                 {cartItems && cartItems.length ? (
@@ -33,20 +33,20 @@ export default function CommonCart({
                               cartItem.productID.imageUrl
                             }
                             alt="Product image"
-                            className="h-24 w-25 max-w-full rounded-lg object-cover"
+                            className="h-24 w-25 max-w-full border border-richblack-600 rounded-lg object-cover"
                           />
                         </div>
                         <div className="flex flex-1 flex-col justify-between">
                           <div className="sm:col-gap-5 sm:grid sm:grid-cols-2">
                             <div className="pr-8 sm:pr-4">
-                              <p className="text-base font-semibold text-gray-900">
+                              <p className="text-base font-semibold text-richblack-25">
                                 {cartItem &&
                                   cartItem.productID &&
                                   cartItem.productID.name}
                               </p>
                             </div>
                             <div className="mt-4 flex gap-3 items-end justify-between sm:mt-0 sm:items-start sm:justify-end">
-                              <p className="shrink-0 w-20 text-base font-semibold text-gray-950 sm:order-1 sm:ml-8 sm:text-right">
+                              <p className="shrink-0 w-20 text-base font-semibold text-[#f57224] sm:order-1 sm:ml-8 sm:text-right">
                                 $
                                 {cartItem &&
                                   cartItem.productID &&
@@ -54,7 +54,7 @@ export default function CommonCart({
                               </p>
                               <button
                                 type="button"
-                                className="font-medium text-yellow-700 sm:order-2"
+                                className="font-medium text-yellow-100 sm:order-2"
                                 onClick={() =>
                                   handleDeleteCartItem(cartItem._id)
                                 }
@@ -64,7 +64,7 @@ export default function CommonCart({
                                 componentLevelLoader.id === cartItem._id ? (
                                   <ComponentLevelLoader
                                     text={"Removing"}
-                                    color={"#0000000"}
+                                    color={"#fff"}
                                     loading={
                                       componentLevelLoader &&
                                       componentLevelLoader.loading
@@ -87,7 +87,7 @@ export default function CommonCart({
               <div className="mt-6 border-t border-b py-2">
                 <div className="flex items-center justify-between">
                   <p className="text-sm text-gray-400">Subtotal</p>
-                  <p className="text-lg text-black font-semibold">
+                  <p className="text-lg text-[#f57224] font-semibold">
                     $
                     {cartItems && cartItems.length
                       ? cartItems.reduce(
@@ -99,11 +99,11 @@ export default function CommonCart({
                 </div>
                 <div className="flex items-center justify-between">
                   <p className="text-sm text-gray-400">Shipping</p>
-                  <p className="text-lg text-black font-semibold">$0</p>
+                  <p className="text-lg text-[#f57224] font-semibold">$0</p>
                 </div>
                 <div className="flex items-center justify-between">
                   <p className="text-sm text-gray-400">Total</p>
-                  <p className="text-lg text-black font-semibold">
+                  <p className="text-lg text-[#f57224] font-semibold">
                     $
                     {cartItems && cartItems.length
                       ? cartItems.reduce(
@@ -117,7 +117,7 @@ export default function CommonCart({
                   <button
                   onClick={()=>router.push('/checkout')}
                     disabled={cartItems && cartItems.length === 0}
-                    className="disabled:opacity-50 group inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg text-white font-medium uppercase tracking-wide"
+                    className="disabled:opacity-50 group inline-flex w-full items-center justify-center rounded-md bg-yellow-50 px-6 py-4 text-lg text-black font-bold uppercase shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)]  hover:shadow-none hover:scale-95 transition-all duration-200 tracking-wide"
                   >
                     Checkout
                   </button>

@@ -62,7 +62,7 @@ export default function AdminView() {
     return (
       <div className="w-full min-h-screen flex justify-center items-center">
         <PulseLoader
-          color={"#000000"}
+          color={"#fff"}
           loading={pageLevelLoader}
           size={30}
           data-testid="loader"
@@ -82,34 +82,34 @@ export default function AdminView() {
                   {allOrdersForAllUsers.map((item) => (
                     <li
                       key={item._id}
-                      className="bg-gray-200 shadow p-5 flex flex-col space-y-3 py-6 text-left"
+                      className="bg-richblack-800 rounded-md border border-richblack-600 shadow p-5 flex flex-col space-y-3 py-6 text-left"
                     >
                       <div className="flex">
-                        <h1 className="font-bold text-lg mb-3 flex-1">
-                          #order: {item._id}
+                        <h1 className="font-bold text-lg text-richblack-5 mb-3 flex-1">
+                          #order: <span className="text-richblack-100">{item._id}</span>
                         </h1>
                         <div className="flex flex-col gap-2">
                           <div className="flex items-center">
-                            <p className="mr-3 text-sm font-medium text-gray-900">
+                            <p className="mr-3 text-sm font-medium text-richblack-5">
                               User Name :
                             </p>
-                            <p className="text-sm  font-semibold text-gray-900">
+                            <p className="text-sm  font-semibold text-richblack-100">
                               {item?.user?.name}
                             </p>
                           </div>
                           <div className="flex items-center">
-                            <p className="mr-3 text-sm font-medium text-gray-900">
+                            <p className="mr-3 text-sm font-medium text-richblack-5">
                               User Email :
                             </p>
-                            <p className="text-sm  font-semibold text-gray-900">
+                            <p className="text-sm  font-semibold text-richblack-100">
                               {item?.user?.email}
                             </p>
                           </div>
                           <div className="flex items-center">
-                            <p className="mr-3 text-sm font-medium text-gray-900">
+                            <p className="mr-3 text-sm font-medium text-richblack-5">
                               Total Paid Amount :
                             </p>
-                            <p className="text-sm  font-semibold text-gray-900">
+                            <p className="text-sm  font-semibold text-richblack-100">
                               ${item?.totalPrice}
                             </p>
                           </div>
@@ -131,7 +131,7 @@ export default function AdminView() {
                         ))}
                       </div>
                       <div className="flex gap-5">
-                        <button className="disabled:opacity-50 mt-5 mr-5  inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide">
+                        <button className="disabled:opacity-50 mt-5 mr-5  inline-block bg-yellow-50 text-black px-5 py-3 text-xs font-bold uppercase tracking-wide shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)] rounded-md  hover:shadow-none hover:scale-95 transition-all duration-200">
                           {item.isProcessing
                             ? "Order is Processing"
                             : "Order is delivered"}
@@ -139,14 +139,14 @@ export default function AdminView() {
                         <button
                           onClick={() => handleUpdateOrderStatus(item)}
                           disabled={!item.isProcessing}
-                          className="disabled:opacity-50 mt-5 mr-5  inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
+                          className="disabled:opacity-50 mt-5 mr-5  inline-block bg-yellow-50 text-black px-5 py-3 text-xs font-bold uppercase tracking-wide shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)] rounded-md  hover:shadow-none hover:scale-95 transition-all duration-200"
                         >
                           {componentLevelLoader &&
                           componentLevelLoader.loading &&
                           componentLevelLoader.id === item._id ? (
                             <ComponentLevelLoader
                               text={"Updating Order Status"}
-                              color={"#ffffff"}
+                              color={"#000814"}
                               loading={
                                 componentLevelLoader &&
                                 componentLevelLoader.loading

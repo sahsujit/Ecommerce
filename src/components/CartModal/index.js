@@ -60,15 +60,11 @@ export default function CartModal() {
 
     if (res.success) {
       setComponentLevelLoader({ loading: false, id: "" });
-      toast.success(res.message, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
+      toast.success(res.message);
 
       extractAllCartItems();
     } else {
-      toast.error(res.message, {
-        position: toast.POSITION.TOP_RIGHT,
-      });
+      toast.error(res.message);
       setComponentLevelLoader({ loading: false, id: getCartItemID });
     }
   }
@@ -80,10 +76,10 @@ export default function CartModal() {
       setShow={setShowCartModal}
       mainContent={
         cartItems && cartItems.length ? (
-          <ul role="list" className="-my-6 divide-y divide-gray-300">
+          <ul role="list" className="-my-6 divide-y divide-richblack-300">
             {cartItems.map((cartItem) => (
               <li key={cartItem.id} className="flex py-6">
-                <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+                <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-richblack-600">
                   <img
                     src={
                       cartItem &&
@@ -96,7 +92,7 @@ export default function CartModal() {
                 </div>
                 <div className="ml-4 flex flex-1 flex-col">
                   <div>
-                    <div className="flex justify-between text-base font-medium text-gray-900">
+                    <div className="flex justify-between text-base font-medium text-richblack-25">
                       <h3>
                         <a>
                           {cartItem &&
@@ -105,7 +101,7 @@ export default function CartModal() {
                         </a>
                       </h3>
                     </div>
-                    <p className="mt-1 text-sm text-gray-600">
+                    <p className="mt-1 text-sm text-[#f57224]">
                       $
                       {cartItem &&
                         cartItem.productID &&
@@ -115,7 +111,7 @@ export default function CartModal() {
                   <div className="flex flex-1 items-end justify-between text-sm">
                     <button
                       type="button"
-                      className="font-medium text-yellow-600 sm:order-2"
+                      className="font-medium text-yellow-50 sm:order-2"
                       onClick={() => handleDeleteCartItem(cartItem._id)}
                     >
                       {componentLevelLoader &&
@@ -123,7 +119,7 @@ export default function CartModal() {
                       componentLevelLoader.id === cartItem._id ? (
                         <ComponentLevelLoader
                           text={"Removing"}
-                          color={"#000000"}
+                          color={"richblack-100"}
                           loading={
                             componentLevelLoader && componentLevelLoader.loading
                           }
@@ -147,7 +143,7 @@ export default function CartModal() {
               router.push("/cart");
               setShowCartModal(false);
             }}
-            className="mt-1.5 w-full inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
+            className="mt-1.5 w-full inline-block bg-yellow-50 text-black rounded-md px-5 py-3 text-xs font-bold uppercase tracking-wide shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)]  hover:shadow-none hover:scale-95 transition-all duration-200"
           >
             Go To Cart
           </button>
@@ -158,7 +154,7 @@ export default function CartModal() {
               router.push("/checkout");
               setShowCartModal(false);
             }}
-            className="mt-1.5 w-full inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide disabled:opacity-50"
+            className="mt-1.5 w-full inline-block bg-yellow-50 text-black rounded-md px-5 py-3 text-xs font-bold uppercase tracking-wide shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)]  hover:shadow-none hover:scale-95 transition-all duration-200"
           >
             Checkout
           </button>

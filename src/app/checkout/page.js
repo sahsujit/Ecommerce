@@ -6,9 +6,7 @@ import { fetchAllAddresses } from "@/services/address";
 import { createNewOrder } from "@/services/order";
 import { callStripeSession } from "@/services/stripe";
 import { loadStripe } from "@stripe/stripe-js";
-// import { createNewOrder } from "@/services/order";
-// import { callStripeSession } from "@/services/stripe";
-// import { loadStripe } from "@stripe/stripe-js";
+
 import { useRouter, useSearchParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { PulseLoader } from "react-spinners";
@@ -172,7 +170,7 @@ export default function Checkout() {
       <section className="h-screen bg-gray-200">
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mx-auto mt-8 max-w-screen-xl px-4 sm:px-6 lg:px-8 ">
-            <div className="bg-white shadow">
+            <div className="bg-richblack-800 text-richblack-25 shadow">
               <div className="px-4 py-6 sm:px-8 sm:py-10 flex flex-col gap-5">
                 <h1 className="font-bold text-lg">
                   Your payment is successfull and you will be redirected to
@@ -191,7 +189,7 @@ export default function Checkout() {
     return (
       <div className="w-full min-h-screen flex justify-center items-center">
         <PulseLoader
-          color={"#000000"}
+          color={"#fff"}
           loading={isOrderProcessing}
           size={30}
           data-testid="loader"
@@ -207,17 +205,17 @@ export default function Checkout() {
       <div className="grid sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-32">
         <div className="px-4 pt-8">
           <p className="font-medium text-xl">Cart Summary</p>
-          <div className="mt-8 space-y-3 rounded-lg border bg-white px-2 py-4 sm:px-5">
+          <div className="mt-8 space-y-3 rounded-lg border border-richblack-600 px-2 py-4 sm:px-5">
             {cartItems && cartItems.length ? (
               cartItems.map((item) => (
                 <div
-                  className="flex flex-col rounded-lg bg-white sm:flex-row"
+                  className="flex flex-col bg-richblack-800 rounded-lg sm:flex-row"
                   key={item._id}
                 >
                   <img
                     src={item && item.productID && item.productID.imageUrl}
                     alt="Cart Item"
-                    className="m-2 h-24 w-28 rounded-md border object-cover object-center"
+                    className="m-2 h-24 w-28 rounded-md border border-richblack-600 object-cover object-center"
                   />
                   <div className="flex w-full flex-col px-4 py-4">
                     <span className="font-bold">
@@ -245,15 +243,15 @@ export default function Checkout() {
                 <div
                   onClick={() => handleSelectedAddress(item)}
                   key={item._id}
-                  className={`border p-6 ${item._id === selectedAddress ? "border-red-900" : ""
+                  className={`border bg-richblack-800 rounded-md border-richblack-600 p-6 ${item._id === selectedAddress ? "border-richblack-5" : ""
                     }`}
                 >
-                  <p>Name : {item.fullName}</p>
-                  <p>Address : {item.address}</p>
-                  <p>City : {item.city}</p>
-                  <p>Country : {item.country}</p>
-                  <p>PostalCode : {item.postalCode}</p>
-                  <button className="mt-5 mr-5 inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide">
+                  <p>Name :<span className="text-richblack-100"> {item.fullName}</span></p>
+                  <p>Address : <span className="text-richblack-100"> {item.address}</span></p>
+                  <p>City : <span className="text-richblack-100"> {item.city}</span></p>
+                  <p>Country : <span className="text-richblack-100"> {item.country}</span></p>
+                  <p>PostalCode : <span className="text-richblack-100"> {item.postalCode}</span></p>
+                  <button className="mt-5 mr-5 inline-block bg-yellow-50 text-black shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)] px-5 py-3 text-xs font-bold  hover:shadow-none hover:scale-95 transition-all duration-200 rounded-md uppercase tracking-wide">
                     {item._id === selectedAddress
                       ? "Selected Address"
                       : "Select Address"}
@@ -266,14 +264,14 @@ export default function Checkout() {
           </div>
           <button
             onClick={() => router.push("/account")}
-            className="mt-5 mr-5 inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
+            className="mt-5 mr-5 inline-block bg-yellow-50 text-black px-5 py-3 text-xs font-bold uppercase tracking-wide shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)] rounded-md hover:shadow-none hover:scale-95 transition-all duration-200"
           >
             Add new address
           </button>
-          <div className="mt-6 border-t border-b py-2">
+          <div className="mt-6 border-t border-richblack-600 border-b py-2">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-medium text-gray-900">Subtotal</p>
-              <p className="text-lg font-bold text-gray-900">
+              <p className="text-sm font-medium text-richblack-25">Subtotal</p>
+              <p className="text-lg font-bold text-[#f57224]">
                 $
                 {cartItems && cartItems.length
                   ? cartItems.reduce(
@@ -284,12 +282,12 @@ export default function Checkout() {
               </p>
             </div>
             <div className="flex items-center justify-between">
-              <p className="text-sm font-medium text-gray-900">Shipping</p>
-              <p className="text-lg font-bold text-gray-900">Free</p>
+              <p className="text-sm font-medium text-richblack-25">Shipping</p>
+              <p className="text-lg font-bold text-richblack-50">Free</p>
             </div>
             <div className="flex items-center justify-between">
-              <p className="text-sm font-medium text-gray-900">Total</p>
-              <p className="text-lg font-bold text-gray-900">
+              <p className="text-sm font-medium text-richblack-25">Total</p>
+              <p className="text-lg font-bold text-[#f57224]">
                 $
                 {cartItems && cartItems.length
                   ? cartItems.reduce(
@@ -306,7 +304,7 @@ export default function Checkout() {
                   Object.keys(checkoutFormData.shippingAddress).length === 0
                 }
                 onClick={handleCheckout}
-                className="disabled:opacity-50 mt-5 mr-5 w-full  inline-block bg-black text-white px-5 py-3 text-xs font-medium uppercase tracking-wide"
+                className="disabled:opacity-50 mt-5 mr-5 w-full  inline-block bg-yellow-50 text-black px-5 rounded-md py-3 text-xs font-bold shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)]  hover:shadow-none hover:scale-95 transition-all duration-200 uppercase tracking-wide"
               >
                 Checkout
               </button>

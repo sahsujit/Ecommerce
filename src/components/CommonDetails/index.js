@@ -34,7 +34,7 @@ export default function CommonDetails({ item }) {
  
 
   return (
-    <section className="mx-auto text-black max-w-screen-xl px-4 sm:px-6 lg:px-8">
+    <section className="mx-auto text-richblack-600 max-w-screen-xl px-4 sm:px-6 lg:px-8">
       <div className="container mx-auto px-4">
         <div className="lg:col-gap-12 xl:col-gap-16 mt-8 grid grid-cols-1 gap-12 lg:mt-12 lg:grid-cols-5 lg:gap-16">
           <div className="lg:col-span-3 lg:row-end-1">
@@ -75,20 +75,20 @@ export default function CommonDetails({ item }) {
             </div>
           </div>
           <div className="lg:col-span-2 lg:row-span-2 lg:row-end-2">
-            <h1 className="text-2xl font-bold text-gray-900">
+            <h1 className="text-2xl font-bold text-richblack-25">
               {item && item.name}
             </h1>
             <div className="mt-10 flex flex-col items-center justify-between space-y-4 botder-t border-b py-4 sm:flex-row sm:space-y-0">
               <div className="flex items-end">
                 <h1
-                  className={`text-3xl font-bold mr-2 ${
+                  className={`text-3xl text-richblack-100  font-bold mr-2 ${
                     item.onSale === "yes" ? "line-through" : ""
                   }`}
                 >
                   ${item && item.price}
                 </h1>
                 {item.onSale === "yes" ? (
-                  <h1 className="text-3xl font-bold text-red-700">{`$${(
+                  <h1 className="text-3xl font-bold text-[#f57224]">{`$${(
                     item.price -
                     item.price * (item.priceDrop / 100)
                   ).toFixed(2)}`}</h1>
@@ -97,12 +97,12 @@ export default function CommonDetails({ item }) {
               <button
                 type="button"
                 onClick={() => handleAddToCart(item)}
-                className="mt-1.5 inline-block bg-black px-5 py-3 text-xs font-medium tracking-wide uppercase text-white"
+                className="mt-1.5 inline-block bg-yellow-50 px-5 py-3 text-xs font-bold rounded-md shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)] tracking-wide uppercase text-black  hover:shadow-none hover:scale-95 transition-all duration-200 "
               >
                 {componentLevelLoader && componentLevelLoader.loading ? (
                   <ComponentLevelLoader
                     text={"Adding to Cart"}
-                    color={"#ffffff"}
+                    color={"black"}
                     loading={
                       componentLevelLoader && componentLevelLoader.loading
                     }
@@ -113,25 +113,25 @@ export default function CommonDetails({ item }) {
               </button>
             </div>
             <ul className="mt-8 space-y-2">
-              <li className="flex items-center text-left text-sm font-medium text-gray-600">
+              <li className="flex items-center text-left text-sm font-medium text-richblack-200">
                 {item && item.deliveryInfo}
               </li>
-              <li className="flex items-center text-left text-sm font-medium text-gray-600">
+              <li className="flex items-center text-left text-sm font-medium text-richblack-200">
                 {"Cancel anytime"}
               </li>
             </ul>
             <div className="lg:col-span-3">
-              <div className="border-b border-gray-400">
+              <div className="border-b border-richblack-600">
                 <nav className="flex gap-4">
                   <a
                     href="#"
-                    className="border-b-2 border-gray-900 py-4 text-sm font-medium text-gray-900"
+                    className="border-b-2 border-yellow-50 py-4 text-sm font-medium text-richblack-200"
                   >
                     Description
                   </a>
                 </nav>
               </div>
-              <div className="mt-8 flow-root sm:mt-12">
+              <div className="mt-8 text-richblack-50 flow-root sm:mt-12">
                 {item && item.description}
               </div>
             </div>

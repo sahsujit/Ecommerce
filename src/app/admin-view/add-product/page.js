@@ -147,12 +147,13 @@ export default function AdminAddNewProduct() {
 
   return (
     <div className="w-full mt-5 mr-0 mb-0 ml-0 relative">
-      <div className="flex flex-col items-start justify-start p-10 bg-white shadow-2xl rounded-xl relative">
+      <div className="flex flex-col items-start justify-start p-10  shadow-2xl rounded-xl relative">
         <div className="w-full mt-6 mr-0 mb-0 ml-0 space-y-8">
           <input
             accept="image/*"
             max="1000000"
             type="file"
+         
             onChange={handleImage}
           />
 
@@ -194,12 +195,12 @@ export default function AdminAddNewProduct() {
           )}
           <button
             onClick={handleAddProduct}
-            className="inline-flex w-full items-center justify-center bg-black px-6 py-4 text-lg text-white font-medium uppercase tracking-wide"
+            className="inline-flex w-full items-center justify-center bg-yellow-50 px-6 py-4 text-lg text-black rounded-md shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)] hover:shadow-none hover:scale-95 transition-all duration-200 font-medium uppercase tracking-wide"
           >
             {componentLevelLoader && componentLevelLoader.loading ? (
               <ComponentLevelLoader
                 text={currentUpdatedProduct !== null ? 'Updating Product' : "Adding Product"}
-                color={"#ffffff"}
+                color={"#000814"}
                 loading={componentLevelLoader && componentLevelLoader.loading}
               />
             ) : currentUpdatedProduct !== null ? (
