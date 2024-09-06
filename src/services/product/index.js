@@ -1,5 +1,7 @@
 
 import Cookies from "js-cookie";
+const BASE_URL =  "http://localhost:3000";
+
 
 export const addNewProduct = async (formData) => {
   try {
@@ -24,7 +26,7 @@ export const addNewProduct = async (formData) => {
 
 export const getAllAdminProducts = async () => {
   try {
-    const res = await fetch("http://localhost:3000/api/admin/all-product", {
+    const res = await fetch(`${BASE_URL}/api/admin/all-product`, {
       method: "GET",
       cache: "no-store",
     });
@@ -81,7 +83,7 @@ export const deleteAProduct = async (id) => {
 export const productByCategory = async(id)=>{
   try{
     const res = await fetch(
-      `http://localhost:3000/api/admin/product-by-category?id=${id}`,
+      `${BASE_URL}/api/admin/product-by-category?id=${id}`,
       {
         method: "GET",
         cache: "no-store",
@@ -107,7 +109,7 @@ export const productByCategory = async(id)=>{
 export const productById = async (id) => {
   try {
     const res = await fetch(
-      `http://localhost:3000/api/admin/product-by-id?id=${id}`,
+      `${BASE_URL}/api/admin/product-by-id?id=${id}`,
       {
         method: "GET",
         cache: "no-store",
