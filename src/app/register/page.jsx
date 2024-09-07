@@ -6,7 +6,7 @@ import SelectComponent from "@/components/FormElements/SelectComponent";
 import ComponentLevelLoader from "@/components/Loader/componentlevel";
 import Notification from "@/components/Notification";
 import { GlobalContext } from "@/context";
-import {  registerUser } from "@/services/register";
+import {  registerNewUser } from "@/services/register";
 import { registrationFormControls } from "@/utils";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
@@ -44,7 +44,7 @@ export default function Register() {
 
   async function handleRegisterOnSubmit() {
     setPageLevelLoader(true);
-    const data = await registerUser(formData);
+    const data = await registerNewUser(formData);
 
     if (data.success) {
       toast.success(data.message);
