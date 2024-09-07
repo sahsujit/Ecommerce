@@ -1,37 +1,17 @@
-// import { apiConnector } from "../config/apiConnector"
-
-// export const login = async(formData) =>{
-//     try{
-//         const res = await apiConnector("/api/login",{
-//             method: "POST",
-//             headers: {
-//                 "content-type": "application/json"
-//             },
-//             body: JSON.stringify(formData)
-
-//         })
-
-//         const result = await res.json()
-//         return result
-//     }catch(err){
-//         console.log(err)
-//     }
-// }
-
-import { apiConnector } from "../config/apiConnector";
-
 export const login = async (formData) => {
   try {
-    const res = await apiConnector.post("/api/login", formData, {
+    const response = await fetch("/api/login", {
+      method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "content-type": "application/json",
       },
+      body: JSON.stringify(formData),
     });
 
-    
-    return res.data;
-  } catch (err) {
-    console.error("Login error:", err.response?.data || err.message);
-    throw err;
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.log(error);
   }
 };

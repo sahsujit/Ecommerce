@@ -1,5 +1,3 @@
-
-
 import connectToDB from "@/database";
 import Product from "@/models/product";
 import { NextResponse } from "next/server";
@@ -32,7 +30,3 @@ export async function GET(req) {
     });
   }
 }
-
-
-
-
