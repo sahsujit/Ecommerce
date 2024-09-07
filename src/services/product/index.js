@@ -136,19 +136,21 @@ export const addNewProduct = async (formData) => {
     console.error('Error adding product:', error);
   }
 };
-
 export const getAllAdminProducts = async () => {
   try {
-    const response = await fetch(`${BASE_URL}/api/admin/all-product`, {
+    const res = await fetch(`/api/admin/all-product`, {
       method: "GET",
-      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`, // Ensure token is available
+      },
     });
 
-    if (!response.ok) {
+    if (!res.ok) {
       throw new Error('Network response was not ok');
     }
 
-    const data = await response.json();
+    const data = await res.json();
     return data;
   } catch (error) {
     console.error('Error fetching all products:', error);
