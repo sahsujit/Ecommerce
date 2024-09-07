@@ -112,11 +112,11 @@
 
 import Cookies from "js-cookie";
 
-const baseURL = ""; // Use an empty string for relative URLs
+// const baseURL = ""; // Use an empty string for relative URLs
 
 export const addNewProduct = async (formData) => {
   try {
-    const response = await fetch(`${baseURL}/api/admin/add-product`, {
+    const response = await fetch(`/api/admin/add-product`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -134,7 +134,7 @@ export const addNewProduct = async (formData) => {
 
 export const getAllAdminProducts = async () => {
   try {
-    const url = "/api/admin/all-product";
+    const url = `${process.env.BASE_URL}/api/admin/all-product`;
     console.log(`Fetching URL: ${url}`);
     const res = await fetch(url, {
       method: "GET",
@@ -149,7 +149,7 @@ export const getAllAdminProducts = async () => {
 
 export const updateAProduct = async (formData) => {
   try {
-    const res = await fetch(`${baseURL}/api/admin/update-product`, {
+    const res = await fetch(`/api/admin/update-product`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -167,7 +167,7 @@ export const updateAProduct = async (formData) => {
 
 export const deleteAProduct = async (id) => {
   try {
-    const res = await fetch(`${baseURL}/api/admin/delete-product?id=${id}`, {
+    const res = await fetch(`/api/admin/delete-product?id=${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
@@ -183,7 +183,7 @@ export const deleteAProduct = async (id) => {
 
 export const productByCategory = async (id) => {
   try {
-    const res = await fetch(`/api/admin/product-by-category?id=${id}`, {
+    const res = await fetch(`${process.env.BASE_URL}/api/admin/product-by-category?id=${id}`, {
       method: "GET",
     });
 
@@ -196,7 +196,7 @@ export const productByCategory = async (id) => {
 
 export const productById = async (id) => {
   try {
-    const res = await fetch(`/api/admin/product-by-id?id=${id}`, {
+    const res = await fetch(`${process.env.BASE_URL}/api/admin/product-by-id?id=${id}`, {
       method: "GET",
     });
 
