@@ -1,236 +1,111 @@
-// //add a new product service
-// import Cookies from "js-cookie";
-
-// export const addNewProduct = async (formData) => {
-//   try {
-//     const response = await fetch("/api/admin/add-product", {
-//       method: "POST",
-//       headers: {
-//         "content-type": "application/json",
-//         Authorization: `Bearer ${Cookies.get("token")}`,
-//       },
-//       body: JSON.stringify(formData),
-//     });
-
-//     const data = await response.json();
-
-//     return data;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// export const getAllAdminProducts = async () => {
-//   try {
-//     const res = await fetch(`${process.env.BASE_URL}/api/admin/all-product`, {
-//       method: "GET",
-//       cache: "no-store",
-//     });
-
-//     const data = await res.json();
-
-//     return data;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// export const updateAProduct = async (formData) => {
-//   try {
-//     const res = await fetch("/api/admin/update-product", {
-//       method: "PUT",
-//       headers: {
-//         "content-type": "application/json",
-//         Authorization: `Bearer ${Cookies.get("token")}`,
-//       },
-//       cache: "no-store",
-//       body: JSON.stringify(formData),
-//     });
-
-//     const data = await res.json();
-
-//     return data;
-//   } catch (e) {
-//     console.log(e);
-//   }
-// };
-
-// export const deleteAProduct = async (id) => {
-//   try {
-//     const res = await fetch(`/api/admin/delete-product?id=${id}`, {
-//       method: "DELETE",
-//       headers: {
-//         Authorization: `Bearer ${Cookies.get("token")}`,
-//       },
-//     });
-
-//     const data = await res.json();
-
-//     return data;
-//   } catch (e) {
-//     console.log(e);
-//   }
-// };
-
-// export const productByCategory = async (id) => {
-//   try {
-//     const res = await fetch(
-//       `${process.env.BASE_URL}/api/admin/product-by-category?id=${id}`,
-//       {
-//         method: "GET",
-//         cache: "no-store",
-//       }
-//     );
-
-//     const data = await res.json();
-
-//     return data;
-//   } catch (e) {
-//     console.log(e);
-//   }
-// };
-
-// export const productById = async (id) => {
-//   try {
-//     const res = await fetch(
-//       `${process.env.BASE_URL}/api/admin/product-by-id?id=${id}`,
-//       {
-//         method: "GET",
-//         cache: "no-store",
-//       }
-//     );
-
-//     const data = await res.json();
-
-//     return data;
-//   } catch (e) {
-//     console.log(e);
-//   }
-// };
-
-
-
+//add a new product service
 import Cookies from "js-cookie";
-
-const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'; 
 
 export const addNewProduct = async (formData) => {
   try {
-    const response = await fetch(`${BASE_URL}/api/admin/add-product`, {
+    const response = await fetch("/api/admin/add-product", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${Cookies.get("token")}`, // Ensure token is available
+        "content-type": "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
       },
       body: JSON.stringify(formData),
     });
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-
     const data = await response.json();
+
     return data;
   } catch (error) {
-    console.error('Error adding product:', error);
+    console.log(error);
   }
 };
+
 export const getAllAdminProducts = async () => {
   try {
-    const res = await fetch(`/api/admin/all-product`, {
+    const res = await fetch(`${process.env.BASE_URL}/api/admin/all-product`, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${Cookies.get("token")}`, // Ensure token is available
-      },
+      cache: "no-store",
     });
 
-    if (!res.ok) {
-      throw new Error('Network response was not ok');
-    }
-
     const data = await res.json();
+
     return data;
   } catch (error) {
-    console.error('Error fetching all products:', error);
+    console.log(error);
   }
 };
 
 export const updateAProduct = async (formData) => {
   try {
-    const response = await fetch(`/api/admin/update-product`, {
+    const res = await fetch("/api/admin/update-product", {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${Cookies.get("token")}`, // Ensure token is available
+        "content-type": "application/json",
+        Authorization: `Bearer ${Cookies.get("token")}`,
       },
       cache: "no-store",
       body: JSON.stringify(formData),
     });
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
+    const data = await res.json();
 
-    const data = await response.json();
     return data;
-  } catch (error) {
-    console.error('Error updating product:', error);
+  } catch (e) {
+    console.log(e);
   }
 };
 
 export const deleteAProduct = async (id) => {
   try {
-    const response = await fetch(`/api/admin/delete-product?id=${id}`, {
+    const res = await fetch(`/api/admin/delete-product?id=${id}`, {
       method: "DELETE",
       headers: {
-        Authorization: `Bearer ${Cookies.get("token")}`, // Ensure token is available
+        Authorization: `Bearer ${Cookies.get("token")}`,
       },
     });
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
+    const data = await res.json();
 
-    const data = await response.json();
     return data;
-  } catch (error) {
-    console.error('Error deleting product:', error);
+  } catch (e) {
+    console.log(e);
   }
 };
 
 export const productByCategory = async (id) => {
   try {
-    const response = await fetch(`/api/admin/product-by-category?id=${id}`, {
-      method: "GET",
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `${process.env.BASE_URL}/api/admin/product-by-category?id=${id}`,
+      {
+        method: "GET",
+        cache: "no-store",
+      }
+    );
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
+    const data = await res.json();
 
-    const data = await response.json();
     return data;
-  } catch (error) {
-    console.error('Error fetching products by category:', error);
+  } catch (e) {
+    console.log(e);
   }
 };
 
 export const productById = async (id) => {
   try {
-    const response = await fetch(`/api/admin/product-by-id?id=${id}`, {
-      method: "GET",
-      cache: "no-store",
-    });
+    const res = await fetch(
+      `${process.env.BASE_URL}/api/admin/product-by-id?id=${id}`,
+      {
+        method: "GET",
+        cache: "no-store",
+      }
+    );
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
+    const data = await res.json();
 
-    const data = await response.json();
     return data;
-  } catch (error) {
-    console.error('Error fetching product by ID:', error);
+  } catch (e) {
+    console.log(e);
   }
 };
+
+
