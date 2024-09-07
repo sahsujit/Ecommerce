@@ -112,8 +112,7 @@
 
 import Cookies from "js-cookie";
 
-// Base URL should be set in environment variables for deployment
-const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'; // Fallback to localhost if not set
+const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'; 
 
 export const addNewProduct = async (formData) => {
   try {
@@ -159,7 +158,7 @@ export const getAllAdminProducts = async () => {
 
 export const updateAProduct = async (formData) => {
   try {
-    const response = await fetch(`${BASE_URL}/api/admin/update-product`, {
+    const response = await fetch(`/api/admin/update-product`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -182,7 +181,7 @@ export const updateAProduct = async (formData) => {
 
 export const deleteAProduct = async (id) => {
   try {
-    const response = await fetch(`${BASE_URL}/api/admin/delete-product?id=${id}`, {
+    const response = await fetch(`/api/admin/delete-product?id=${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`, // Ensure token is available
@@ -202,7 +201,7 @@ export const deleteAProduct = async (id) => {
 
 export const productByCategory = async (id) => {
   try {
-    const response = await fetch(`${BASE_URL}/api/admin/product-by-category?id=${id}`, {
+    const response = await fetch(`/api/admin/product-by-category?id=${id}`, {
       method: "GET",
       cache: "no-store",
     });
@@ -220,7 +219,7 @@ export const productByCategory = async (id) => {
 
 export const productById = async (id) => {
   try {
-    const response = await fetch(`${BASE_URL}/api/admin/product-by-id?id=${id}`, {
+    const response = await fetch(`/api/admin/product-by-id?id=${id}`, {
       method: "GET",
       cache: "no-store",
     });
