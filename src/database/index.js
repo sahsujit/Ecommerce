@@ -11,16 +11,16 @@
 
 import mongoose from "mongoose";
 
-const configOptions = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-};
+// const configOptions = {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// };
 
 const connectToDB = async () => {
   
 
   mongoose
-    .connect(process.env.MONGODB_URL, configOptions)
+    .connect(process.env.MONGODB_URL)
     .then(() => console.log("Ecommerce database connected successfully!"))
     .catch((err) =>
       console.log(`Getting Error from DB connection ${err.message}`)
