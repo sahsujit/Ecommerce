@@ -1,5 +1,5 @@
 //add a new product service
-
+"server-only"
 import Cookies from "js-cookie";
 
 export const addNewProduct = async (formData) => {
