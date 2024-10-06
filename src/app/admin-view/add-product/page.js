@@ -15,6 +15,7 @@ import {
   firebaseConfig,
   firebaseStroageURL,
 } from "@/utils";
+import ItemLayout from "@/utils/ItemLayout";
 import { initializeApp } from "firebase/app";
 import {
   getDownloadURL,
@@ -167,7 +168,8 @@ export default function AdminAddNewProduct() {
           </div>
           {adminAddProductformControls.map((controlItem) =>
             controlItem.componentType === "input" ? (
-              <InputComponent
+              <ItemLayout>
+ <InputComponent
                 type={controlItem.type}
                 placeholder={controlItem.placeholder}
                 label={controlItem.label}
@@ -179,8 +181,11 @@ export default function AdminAddNewProduct() {
                   });
                 }}
               />
+              </ItemLayout>
+             
             ) : controlItem.componentType === "select" ? (
-              <SelectComponent
+              <ItemLayout>
+  <SelectComponent
                 label={controlItem.label}
                 options={controlItem.options}
                 value={formData[controlItem.id]}
@@ -191,6 +196,8 @@ export default function AdminAddNewProduct() {
                   });
                 }}
               />
+              </ItemLayout>
+            
             ) : null
           )}
           <button

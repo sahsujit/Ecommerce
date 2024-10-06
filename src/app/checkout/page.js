@@ -5,6 +5,7 @@ import { GlobalContext } from "@/context";
 import { fetchAllAddresses } from "@/services/address";
 import { createNewOrder } from "@/services/order";
 import { callStripeSession } from "@/services/stripe";
+import ItemLayout from "@/utils/ItemLayout";
 import { loadStripe } from "@stripe/stripe-js";
 
 import { useRouter, useSearchParams } from "next/navigation";
@@ -208,7 +209,7 @@ export default function Checkout() {
           <div className="mt-8 space-y-3 rounded-lg border border-richblack-600 px-2 py-4 sm:px-5">
             {cartItems && cartItems.length ? (
               cartItems.map((item) => (
-                <div
+                <ItemLayout
                   className="flex flex-col bg-richblack-800 rounded-lg sm:flex-row"
                   key={item._id}
                 >
@@ -225,7 +226,7 @@ export default function Checkout() {
                       {item && item.productID && item.productID.price}
                     </span>
                   </div>
-                </div>
+                </ItemLayout>
               ))
             ) : (
               <div>Your cart is empty</div>
@@ -240,7 +241,7 @@ export default function Checkout() {
           <div className="w-full mt-6 mr-0 mb-0 ml-0 space-y-6">
             {addresses && addresses.length ? (
               addresses.map((item) => (
-                <div
+                <ItemLayout
                   onClick={() => handleSelectedAddress(item)}
                   key={item._id}
                   className={`border bg-richblack-800 rounded-md border-richblack-600 p-6 ${item._id === selectedAddress ? "border-richblack-5" : ""
@@ -256,7 +257,7 @@ export default function Checkout() {
                       ? "Selected Address"
                       : "Select Address"}
                   </button>
-                </div>
+                </ItemLayout>
               ))
             ) : (
               <p>No addresses added</p>

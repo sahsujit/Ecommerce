@@ -11,6 +11,7 @@ import {
   updateAddress,
 } from "@/services/address";
 import { addNewAddressFormControls } from "@/utils";
+import ItemLayout from "@/utils/ItemLayout";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { PulseLoader } from "react-spinners";
@@ -121,13 +122,13 @@ export default function Account() {
           <div className="p-6 sm:p-12">
             <div className="flex flex-col space-y-4 md:space-y-0 md:space-x-6 md:flex-row">
             </div>
-            <div className="flex flex-col flex-1">
+            <ItemLayout className="flex flex-col flex-1">
               <h4 className="text-lg font-semibold text-center md:text-left">
                 {user?.name}
               </h4>
               <p>{user?.email}</p>
               <p>{user?.role}</p>
-            </div>
+            </ItemLayout>
             <button onClick={() => router.push('/orders')} className="mt-5  inline-block bg-yellow-50 text-black shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)]  hover:shadow-none hover:scale-95 transition-all duration-200 rounded-md px-5 py-3 text-xs font-medium uppercase tracking-wide">
               View Your Orders
             </button>
@@ -144,7 +145,7 @@ export default function Account() {
                 <div className="mt-4 flex flex-col  gap-4">
                   {addresses && addresses.length ? (
                     addresses.map((item) => (
-                      <div className="border bg-richblack-800 rounded-md border-richblack-600 p-6" key={item._id}>
+                      <ItemLayout className="border bg-richblack-800 rounded-md border-richblack-600 p-6" key={item._id}>
                         <p>Name :<span className="text-richblack-100"> {item.fullName}</span></p>
                         <p>Address : <span className="text-richblack-100"> {item.address}</span></p>
                         <p>City : <span className="text-richblack-100"> {item.city}</span></p>
@@ -173,7 +174,7 @@ export default function Account() {
                             "Delete"
                           )}
                         </button>
-                      </div>
+                      </ItemLayout>
                     ))
                   ) : (
                     <p>No address found ! Please add a new address below</p>

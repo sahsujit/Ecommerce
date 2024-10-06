@@ -5,6 +5,7 @@ import ProductButton from "./ProductButtons";
 import ProductTile from "./ProductTile";
 import { useEffect } from "react";
 import Notification from "../Notification";
+import ItemLayout from "@/utils/ItemLayout";
 
 export default function CommonListing({ data }) {
   const router = useRouter();
@@ -19,14 +20,14 @@ export default function CommonListing({ data }) {
         <div className="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-4 sm:gap-4 lg:mt-16">
           {data && data.length
             ? data.map((item) => (
-                <article
+                <ItemLayout
                   className="relative bg-richblack-800 hover:scale-105  transition-all duration-200  flex flex-col overflow-hidden rounded border border-richblack-600   cursor-pointer"
                   key={item._id}
                 
                 >
                   <ProductTile item={item} />
                   <ProductButton item={item} />
-                </article>
+                </ItemLayout>
               ))
             : null}
         </div>
