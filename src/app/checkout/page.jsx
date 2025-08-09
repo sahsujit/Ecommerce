@@ -13,6 +13,9 @@ import { useContext, useEffect, useState } from "react";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
 
+// Force dynamic rendering to avoid static generation issues
+export const dynamic = "force-dynamic";
+
 // Initialize stripePromise once outside component to avoid re-creating on every render
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
@@ -36,52 +39,58 @@ export default function Checkout() {
 
   useEffect(() => {
     async function createFinalOrder() {
-      const isStripe = JSON.parse(localStorage.getItem("stripe"));
+      try {
+        const isStripe = JSON.parse(localStorage.getItem("stripe"));
 
-      if (
-        isStripe &&
-        status === "success" &&
-        cartItems &&
-        cartItems.length > 0
-      ) {
-        setIsOrderProcessing(true);
+        if (
+          isStripe &&
+          status === "success" &&
+          cartItems &&
+          cartItems.length > 0
+        ) {
+          setIsOrderProcessing(true);
 
-        const getCheckoutFormData = JSON.parse(
-          localStorage.getItem("checkoutFormData")
-        );
+          const getCheckoutFormData = JSON.parse(
+            localStorage.getItem("checkoutFormData")
+          );
 
-        const totalPrice = cartItems.reduce(
-          (total, item) => total + (item.productID.price || 0) * (item.qty || 1),
-          0
-        );
+          const totalPrice = cartItems.reduce(
+            (total, item) => total + (item.productID.price || 0) * (item.qty || 1),
+            0
+          );
 
-        const createFinalCheckoutFormData = {
-          user: user?._id,
-          shippingAddress: getCheckoutFormData.shippingAddress,
-          orderItems: cartItems.map((item) => ({
-            qty: item.qty || 1,
-            product: item.productID._id || item.productID,
-          })),
-          paymentMethod: "Stripe",
-          totalPrice,
-          isPaid: true,
-          isProcessing: true,
-          paidAt: new Date(),
-        };
+          const createFinalCheckoutFormData = {
+            user: user?._id,
+            shippingAddress: getCheckoutFormData.shippingAddress,
+            orderItems: cartItems.map((item) => ({
+              qty: item.qty || 1,
+              product: item.productID._id || item.productID,
+            })),
+            paymentMethod: "Stripe",
+            totalPrice,
+            isPaid: true,
+            isProcessing: true,
+            paidAt: new Date(),
+          };
 
-        const res = await createNewOrder(createFinalCheckoutFormData);
+          const res = await createNewOrder(createFinalCheckoutFormData);
 
-        if (res.success) {
-          setIsOrderProcessing(false);
-          setOrderSuccess(true);
-          toast.success(res.message);
-          localStorage.removeItem("stripe");
-          localStorage.removeItem("checkoutFormData");
-        } else {
-          setIsOrderProcessing(false);
-          setOrderSuccess(false);
-          toast.error(res.message);
+          if (res.success) {
+            setIsOrderProcessing(false);
+            setOrderSuccess(true);
+            toast.success(res.message);
+            localStorage.removeItem("stripe");
+            localStorage.removeItem("checkoutFormData");
+          } else {
+            setIsOrderProcessing(false);
+            setOrderSuccess(false);
+            toast.error(res.message);
+          }
         }
+      } catch (error) {
+        setIsOrderProcessing(false);
+        toast.error("Error processing order.");
+        console.error(error);
       }
     }
 
@@ -89,6 +98,8 @@ export default function Checkout() {
   }, [status, cartItems, user]);
 
   async function handleCheckout() {
+    if (!cartItems || cartItems.length === 0) return;
+
     const stripe = await stripePromise;
 
     const createLineItems = cartItems.map((item) => ({
@@ -103,19 +114,25 @@ export default function Checkout() {
       quantity: item.qty || 1,
     }));
 
-    const res = await callStripeSession(createLineItems);
+    try {
+      const res = await callStripeSession(createLineItems);
 
-    setIsOrderProcessing(true);
-    localStorage.setItem("stripe", true);
-    localStorage.setItem("checkoutFormData", JSON.stringify(checkoutFormData));
+      setIsOrderProcessing(true);
+      localStorage.setItem("stripe", true);
+      localStorage.setItem("checkoutFormData", JSON.stringify(checkoutFormData));
 
-    const { error } = await stripe.redirectToCheckout({
-      sessionId: res.id,
-    });
+      const { error } = await stripe.redirectToCheckout({
+        sessionId: res.id,
+      });
 
-    if (error) {
-      toast.error(error.message || "Stripe redirect error");
+      if (error) {
+        toast.error(error.message || "Stripe redirect error");
+        setIsOrderProcessing(false);
+      }
+    } catch (error) {
+      toast.error("Failed to create Stripe session");
       setIsOrderProcessing(false);
+      console.error(error);
     }
   }
 
