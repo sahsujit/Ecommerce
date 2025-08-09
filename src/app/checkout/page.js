@@ -30,8 +30,8 @@ export default function Checkout() {
   const router = useRouter();
   const params = useSearchParams();
 
-  const publishableKey =
-    "pk_test_51PNcvVP7v1jDSs7diwOdtxC4N1gBXuLwHyVWWsHLMNmb6e57z9KpsDv59Y6dtI1hr7TzTHzZSmILzD464UdtNDFU00Ns1R6NBf";
+  const publishableKey =process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
+    
   const stripePromise = loadStripe(publishableKey);
 
 

@@ -1,9 +1,10 @@
-//add a new product service
 import Cookies from "js-cookie";
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
 
 export const addNewProduct = async (formData) => {
   try {
-    const response = await fetch("/api/admin/add-product", {
+    const response = await fetch(`${baseUrl}/api/admin/add-product`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
@@ -12,9 +13,7 @@ export const addNewProduct = async (formData) => {
       body: JSON.stringify(formData),
     });
 
-    const data = await response.json();
-
-    return data;
+    return await response.json();
   } catch (error) {
     console.log(error);
   }
@@ -22,14 +21,12 @@ export const addNewProduct = async (formData) => {
 
 export const getAllAdminProducts = async () => {
   try {
-    const res = await fetch(`http://localhost:3000/api/admin/all-product`, {
+    const res = await fetch(`${baseUrl}/api/admin/all-product`, {
       method: "GET",
       cache: "no-store",
     });
 
-    const data = await res.json();
-
-    return data;
+    return await res.json();
   } catch (error) {
     console.log(error);
   }
@@ -37,7 +34,7 @@ export const getAllAdminProducts = async () => {
 
 export const updateAProduct = async (formData) => {
   try {
-    const res = await fetch("/api/admin/update-product", {
+    const res = await fetch(`${baseUrl}/api/admin/update-product`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -47,9 +44,7 @@ export const updateAProduct = async (formData) => {
       body: JSON.stringify(formData),
     });
 
-    const data = await res.json();
-
-    return data;
+    return await res.json();
   } catch (e) {
     console.log(e);
   }
@@ -57,16 +52,14 @@ export const updateAProduct = async (formData) => {
 
 export const deleteAProduct = async (id) => {
   try {
-    const res = await fetch(`/api/admin/delete-product?id=${id}`, {
+    const res = await fetch(`${baseUrl}/api/admin/delete-product?id=${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${Cookies.get("token")}`,
       },
     });
 
-    const data = await res.json();
-
-    return data;
+    return await res.json();
   } catch (e) {
     console.log(e);
   }
@@ -75,16 +68,14 @@ export const deleteAProduct = async (id) => {
 export const productByCategory = async (id) => {
   try {
     const res = await fetch(
-      `${process.env.BASE_URL}/api/admin/product-by-category?id=${id}`,
+      `${baseUrl}/api/admin/product-by-category?id=${id}`,
       {
         method: "GET",
         cache: "no-store",
       }
     );
 
-    const data = await res.json();
-
-    return data;
+    return await res.json();
   } catch (e) {
     console.log(e);
   }
@@ -92,20 +83,13 @@ export const productByCategory = async (id) => {
 
 export const productById = async (id) => {
   try {
-    const res = await fetch(
-      `${process.env.BASE_URL}/api/admin/product-by-id?id=${id}`,
-      {
-        method: "GET",
-        cache: "no-store",
-      }
-    );
+    const res = await fetch(`${baseUrl}/api/admin/product-by-id?id=${id}`, {
+      method: "GET",
+      cache: "no-store",
+    });
 
-    const data = await res.json();
-
-    return data;
+    return await res.json();
   } catch (e) {
     console.log(e);
   }
 };
-
-

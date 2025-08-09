@@ -1,46 +1,44 @@
 import { NextResponse } from 'next/server';
-
 import Stripe from 'stripe';
+import AuthUser from '@/middleware/AuthUser';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
-
-// const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY); 
-import AuthUser from "@/middleware/AuthUser";
-
-
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 export async function POST(req) {
   try {
     const isAuthUser = await AuthUser(req);
-    if (isAuthUser) {
-      const res = await req.json();
-
-      const session = await stripe.checkout.sessions.create({
-        payment_method_types: ["card"],
-        line_items: res,
-        mode: "payment",
-        success_url: "http://localhost:3000/checkout" + "?status=success",
-        cancel_url: "http://localhost:3000/checkout" + "?status=cancel",
-      });
-
-      return NextResponse.json({
-        success: true,
-        id: session.id,
-      });
-    } else {
-      return NextResponse.json({
-        success: true,
-        message: "You are not authenticated",
-      });
+    if (!isAuthUser) {
+      return NextResponse.json(
+        { success: false, message: 'You are not authenticated' },
+        { status: 401 }
+      );
     }
-  } catch (e) {
-    console.log(e);
-    return NextResponse.json({
-      status: 500,
-      success: false,
-      message: "Something went wrong ! Please try again",
+
+    const res = await req.json();
+
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ['card'],
+      line_items: res,
+      mode: 'payment',
+      success_url: `${baseUrl}/checkout?status=success`,
+      cancel_url: `${baseUrl}/checkout?status=cancel`,
     });
+
+    return NextResponse.json({
+      success: true,
+      id: session.id,
+    });
+  } catch (e) {
+    console.error(e);
+    return NextResponse.json(
+      {
+        success: false,
+        message: 'Something went wrong! Please try again',
+      },
+      { status: 500 }
+    );
   }
 }
