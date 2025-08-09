@@ -13,6 +13,9 @@ import { useContext, useEffect, useState } from "react";
 import { PulseLoader } from "react-spinners";
 import { toast } from "react-toastify";
 
+// Initialize stripePromise once outside component to avoid re-creating on every render
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+
 export default function Checkout() {
   const {
     cartItems,
@@ -29,67 +32,64 @@ export default function Checkout() {
 
   const router = useRouter();
   const params = useSearchParams();
-
-  const publishableKey =process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
-    
-  const stripePromise = loadStripe(publishableKey);
-
-
+  const status = params.get("status");
 
   useEffect(() => {
-
     async function createFinalOrder() {
-      const isStripe = await JSON.parse(localStorage.getItem('stripe'));
+      const isStripe = JSON.parse(localStorage.getItem("stripe"));
 
-      if (isStripe && params.get("status")
-        === "success" && cartItems && cartItems.length > 0) {
-          setIsOrderProcessing(true);
-          const getCheckoutFormData = JSON.parse(
-            localStorage.getItem("checkoutFormData")
-          );
-  
-          const createFinalCheckoutFormData = {
-            user: user?._id,
-            shippingAddress: getCheckoutFormData.shippingAddress,
-            orderItems: cartItems.map((item) => ({
-              qty: 1,
-              product: item.productID,
-            })),
-            paymentMethod: "Stripe",
-            totalPrice: cartItems.reduce(
-              (total, item) => item.productID.price + total,
-              0
-            ),
-            isPaid: true,
-            isProcessing: true,
-            paidAt: new Date(),
-          };
+      if (
+        isStripe &&
+        status === "success" &&
+        cartItems &&
+        cartItems.length > 0
+      ) {
+        setIsOrderProcessing(true);
 
-          const res = await createNewOrder(createFinalCheckoutFormData);
+        const getCheckoutFormData = JSON.parse(
+          localStorage.getItem("checkoutFormData")
+        );
 
-          if (res.success) {
-            setIsOrderProcessing(false);
-            setOrderSuccess(true);
-            toast.success(res.message);
-          } else {
-            setIsOrderProcessing(false);
-            setOrderSuccess(false);
-            toast.error(res.message,);
-          }
-  
+        const totalPrice = cartItems.reduce(
+          (total, item) => total + (item.productID.price || 0) * (item.qty || 1),
+          0
+        );
 
+        const createFinalCheckoutFormData = {
+          user: user?._id,
+          shippingAddress: getCheckoutFormData.shippingAddress,
+          orderItems: cartItems.map((item) => ({
+            qty: item.qty || 1,
+            product: item.productID._id || item.productID,
+          })),
+          paymentMethod: "Stripe",
+          totalPrice,
+          isPaid: true,
+          isProcessing: true,
+          paidAt: new Date(),
+        };
+
+        const res = await createNewOrder(createFinalCheckoutFormData);
+
+        if (res.success) {
+          setIsOrderProcessing(false);
+          setOrderSuccess(true);
+          toast.success(res.message);
+          localStorage.removeItem("stripe");
+          localStorage.removeItem("checkoutFormData");
+        } else {
+          setIsOrderProcessing(false);
+          setOrderSuccess(false);
+          toast.error(res.message);
+        }
       }
     }
 
-    createFinalOrder()
-
-
-  }, [params.get("status", cartItems)])
-
+    createFinalOrder();
+  }, [status, cartItems, user]);
 
   async function handleCheckout() {
     const stripe = await stripePromise;
-
 
     const createLineItems = cartItems.map((item) => ({
       price_data: {
@@ -100,7 +100,7 @@ export default function Checkout() {
         },
         unit_amount: item.productID.price * 100,
       },
-      quantity: 1,
+      quantity: item.qty || 1,
     }));
 
     const res = await callStripeSession(createLineItems);
@@ -112,13 +112,17 @@ export default function Checkout() {
     const { error } = await stripe.redirectToCheckout({
       sessionId: res.id,
     });
-    console.log(error)
 
-
+    if (error) {
+      toast.error(error.message || "Stripe redirect error");
+      setIsOrderProcessing(false);
+    }
   }
 
   async function getAllAddresses() {
-    const res = await fetchAllAddresses(user?._id);
+    if (!user?._id) return;
+
+    const res = await fetchAllAddresses(user._id);
 
     if (res.success) {
       setAddresses(res.data);
@@ -129,42 +133,39 @@ export default function Checkout() {
     if (user !== null) getAllAddresses();
   }, [user]);
 
-
-
-  function handleSelectedAddress(getAddress) {
-    if (getAddress._id === selectedAddress) {
+  function handleSelectedAddress(address) {
+    if (address._id === selectedAddress) {
       setSelectedAddress(null);
       setCheckoutFormData({
         ...checkoutFormData,
         shippingAddress: {},
       });
-
       return;
     }
 
-    setSelectedAddress(getAddress._id);
+    setSelectedAddress(address._id);
     setCheckoutFormData({
       ...checkoutFormData,
       shippingAddress: {
         ...checkoutFormData.shippingAddress,
-        fullName: getAddress.fullName,
-        city: getAddress.city,
-        country: getAddress.country,
-        postalCode: getAddress.postalCode,
-        address: getAddress.address,
+        fullName: address.fullName,
+        city: address.city,
+        country: address.country,
+        postalCode: address.postalCode,
+        address: address.address,
       },
     });
   }
 
-
   useEffect(() => {
     if (orderSuccess) {
-      setTimeout(() => {
-        
+      const timer = setTimeout(() => {
         router.push("/orders");
-      }, [3000]);
+      }, 3000);
+
+      return () => clearTimeout(timer);
     }
-  }, [orderSuccess]);
+  }, [orderSuccess, router]);
 
   if (orderSuccess) {
     return (
@@ -174,8 +175,8 @@ export default function Checkout() {
             <div className="bg-richblack-800 text-richblack-25 shadow">
               <div className="px-4 py-6 sm:px-8 sm:py-10 flex flex-col gap-5">
                 <h1 className="font-bold text-lg">
-                  Your payment is successfull and you will be redirected to
-                  orders page in 3 seconds !
+                  Your payment is successful and you will be redirected to the
+                  orders page in 3 seconds!
                 </h1>
               </div>
             </div>
@@ -184,7 +185,6 @@ export default function Checkout() {
       </section>
     );
   }
-
 
   if (isOrderProcessing) {
     return (
@@ -199,8 +199,6 @@ export default function Checkout() {
     );
   }
 
-
-
   return (
     <div>
       <div className="grid sm:px-10 lg:grid-cols-2 lg:px-20 xl:px-32">
@@ -214,16 +212,16 @@ export default function Checkout() {
                   key={item._id}
                 >
                   <img
-                    src={item && item.productID && item.productID.imageUrl}
+                    src={item?.productID?.imageUrl}
                     alt="Cart Item"
                     className="m-2 h-24 w-28 rounded-md border border-richblack-600 object-cover object-center"
                   />
                   <div className="flex w-full flex-col px-4 py-4">
                     <span className="font-bold">
-                      {item && item.productID && item.productID.name}
+                      {item?.productID?.name}
                     </span>
                     <span className="font-semibold">
-                      {item && item.productID && item.productID.price}
+                      ${item?.productID?.price}
                     </span>
                   </div>
                 </ItemLayout>
@@ -238,21 +236,38 @@ export default function Checkout() {
           <p className="text-gray-400 font-bold">
             Complete your order by selecting address below
           </p>
-          <div className="w-full mt-6 mr-0 mb-0 ml-0 space-y-6">
+          <div className="w-full mt-6 space-y-6">
             {addresses && addresses.length ? (
               addresses.map((item) => (
                 <ItemLayout
                   onClick={() => handleSelectedAddress(item)}
                   key={item._id}
-                  className={`border bg-richblack-800 rounded-md border-richblack-600 p-6 ${item._id === selectedAddress ? "border-richblack-5" : ""
-                    }`}
+                  className={`border bg-richblack-800 rounded-md border-richblack-600 p-6 ${
+                    item._id === selectedAddress
+                      ? "border-richblack-5"
+                      : ""
+                  }`}
                 >
-                  <p>Name :<span className="text-richblack-100"> {item.fullName}</span></p>
-                  <p>Address : <span className="text-richblack-100"> {item.address}</span></p>
-                  <p>City : <span className="text-richblack-100"> {item.city}</span></p>
-                  <p>Country : <span className="text-richblack-100"> {item.country}</span></p>
-                  <p>PostalCode : <span className="text-richblack-100"> {item.postalCode}</span></p>
-                  <button className="mt-5 mr-5 inline-block bg-yellow-50 text-black shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)] px-5 py-3 text-xs font-bold  hover:shadow-none hover:scale-95 transition-all duration-200 rounded-md uppercase tracking-wide">
+                  <p>
+                    Name :{" "}
+                    <span className="text-richblack-100">{item.fullName}</span>
+                  </p>
+                  <p>
+                    Address :{" "}
+                    <span className="text-richblack-100">{item.address}</span>
+                  </p>
+                  <p>
+                    City : <span className="text-richblack-100">{item.city}</span>
+                  </p>
+                  <p>
+                    Country :{" "}
+                    <span className="text-richblack-100">{item.country}</span>
+                  </p>
+                  <p>
+                    PostalCode :{" "}
+                    <span className="text-richblack-100">{item.postalCode}</span>
+                  </p>
+                  <button className="mt-5 mr-5 inline-block bg-yellow-50 text-black shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)] px-5 py-3 text-xs font-bold hover:shadow-none hover:scale-95 transition-all duration-200 rounded-md uppercase tracking-wide">
                     {item._id === selectedAddress
                       ? "Selected Address"
                       : "Select Address"}
@@ -276,9 +291,10 @@ export default function Checkout() {
                 $
                 {cartItems && cartItems.length
                   ? cartItems.reduce(
-                    (total, item) => item.productID.price + total,
-                    0
-                  )
+                      (total, item) =>
+                        total + (item.productID.price || 0) * (item.qty || 1),
+                      0
+                    )
                   : "0"}
               </p>
             </div>
@@ -292,9 +308,10 @@ export default function Checkout() {
                 $
                 {cartItems && cartItems.length
                   ? cartItems.reduce(
-                    (total, item) => item.productID.price + total,
-                    0
-                  )
+                      (total, item) =>
+                        total + (item.productID.price || 0) * (item.qty || 1),
+                      0
+                    )
                   : "0"}
               </p>
             </div>
@@ -305,7 +322,7 @@ export default function Checkout() {
                   Object.keys(checkoutFormData.shippingAddress).length === 0
                 }
                 onClick={handleCheckout}
-                className="disabled:opacity-50 mt-5 mr-5 w-full  inline-block bg-yellow-50 text-black px-5 rounded-md py-3 text-xs font-bold shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)]  hover:shadow-none hover:scale-95 transition-all duration-200 uppercase tracking-wide"
+                className="disabled:opacity-50 mt-5 mr-5 w-full inline-block bg-yellow-50 text-black px-5 rounded-md py-3 text-xs font-bold shadow-[2px_2px_0px_0px_rgba(255,255,255,0.18)] hover:shadow-none hover:scale-95 transition-all duration-200 uppercase tracking-wide"
               >
                 Checkout
               </button>
